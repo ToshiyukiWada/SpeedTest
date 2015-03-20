@@ -1,5 +1,7 @@
 package android.futuresoftware.jp.speedtest;
 
+import android.futuresoftware.jp.speedtest.scene.splash.SplashProcess;
+import android.futuresoftware.jp.speedtest.scene.splash.SplashRenderer;
 import android.futuresoftware.jp.speedtest.scene.test.TestProcess;
 import android.futuresoftware.jp.speedtest.scene.test.TestRenderer;
 import android.futuresoftware.jp.speedtest.scene.test.TestScene;
@@ -36,6 +38,7 @@ public class MainActivity extends SakuraActivity
         this.sakuraManager.setDebug(true);										// デバッグモード
 
         // シーン追加・定義
+        this.sakuraManager.addScene(new TestScene("SPLASH",  new SplashRenderer() , new SplashProcess(), null));
         this.sakuraManager.addScene(new TestScene("TEST",  new TestRenderer() , new TestProcess(), null));
 
         //---------------------------------------------------------------------

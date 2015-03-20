@@ -16,7 +16,7 @@ public class TestProcess extends SceneProcessBase
 
     @Override
     public void back() {
-
+        this.sakuraManager.finish();
     }
 
     @Override

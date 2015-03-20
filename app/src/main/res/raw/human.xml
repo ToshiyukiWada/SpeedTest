@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<texture>
+    <char name="human1"			x="0"	y="0"	w="93"	h="148" />
+    <char name="human2"			x="93"	y="0"	w="93"	h="148" />
+    <char name="human3"			x="186"	y="0"	w="93"	h="148" />
+    <char name="human4"			x="279"	y="0"	w="93"	h="148" />
+    <char name="human5"			x="372"	y="0"	w="93"	h="148" />
+    <char name="human6"			x="0"	y="148"	w="93"	h="148" />
+    <char name="human7"			x="93"	y="148"	w="93"	h="148" />
+    <char name="human8"			x="186"	y="148"	w="93"	h="148" />
+</texture>

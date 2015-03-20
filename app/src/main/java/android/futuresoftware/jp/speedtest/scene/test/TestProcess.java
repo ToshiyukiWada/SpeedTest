@@ -10,6 +10,8 @@ import jp.futuresoftware.android.sakura.core.SakuraTouchManager;
  */
 public class TestProcess extends SceneProcessBase
 {
+    public TestScene scen;
+
     public float startPosY;
     public boolean isAddPlus;
     public float humanAnimation;
@@ -21,6 +23,9 @@ public class TestProcess extends SceneProcessBase
 
     @Override
     public void init() {
+
+        scene           = (TestScene)this.scene;
+
         this.startPosY = 0.0f;
         this.isAddPlus = true;
         this.humanAnimation = 0.0f;

@@ -2,15 +2,20 @@ package android.futuresoftware.jp.speedtest;
 
 import android.futuresoftware.jp.speedtest.scene.splash.SplashProcess;
 import android.futuresoftware.jp.speedtest.scene.splash.SplashRenderer;
+import android.futuresoftware.jp.speedtest.scene.splash.SplashScene;
 import android.futuresoftware.jp.speedtest.scene.test.TestProcess;
 import android.futuresoftware.jp.speedtest.scene.test.TestRenderer;
 import android.futuresoftware.jp.speedtest.scene.test.TestScene;
+import android.futuresoftware.jp.speedtest.scene.title.TitleProcess;
+import android.futuresoftware.jp.speedtest.scene.title.TitleRenderer;
+import android.futuresoftware.jp.speedtest.scene.title.TitleScene;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import jp.futuresoftware.android.sakura.SAKURA;
 import jp.futuresoftware.android.sakura.SakuraActivity;
 
 /**
@@ -37,8 +42,12 @@ public class MainActivity extends SakuraActivity
         this.sakuraManager.setTextTextureBufferSize(20);						// テキストテクスチャバッファーサイズの指定
         this.sakuraManager.setDebug(true);										// デバッグモード
 
+        // AdMobの有効化
+        this.sakuraManager.setAdMob("ca-app-pub-2487912231582475/9419668346", SAKURA.ADMOB_VERTICAL_POSITION.BOTTOM, 320, 50);
+
         // シーン追加・定義
-        this.sakuraManager.addScene(new TestScene("SPLASH",  new SplashRenderer() , new SplashProcess(), null));
+        this.sakuraManager.addScene(new SplashScene("SPLASH",  new SplashRenderer() , new SplashProcess(), null));
+        this.sakuraManager.addScene(new TitleScene("TITLE",  new TitleRenderer() , new TitleProcess(), null));
         this.sakuraManager.addScene(new TestScene("TEST",  new TestRenderer() , new TestProcess(), null));
 
         //---------------------------------------------------------------------

@@ -12,7 +12,9 @@ import jp.futuresoftware.android.sakura.base.SceneRendererBase;
  */
 public class TitleScene extends SceneBase {
 
+    public int texIDStreet;
     public int texIDHuman;
+    public int texIDFslogo;
 
     public TitleScene(String sceneName, SceneRendererBase sceneRendererBase, SceneProcessBase sceneProcessBase, SceneButtonBase sceneButtonBase)
     {
@@ -21,12 +23,16 @@ public class TitleScene extends SceneBase {
 
     @Override
     public void init() {
+        addQueue("LoadTextureFromResource" ,Integer.toString(R.drawable.street), Integer.toString(R.raw.street), "2000");
         addQueue("LoadTextureFromResource" ,Integer.toString(R.drawable.human), Integer.toString(R.raw.human), "20");
+        addQueue("LoadTextureFromResource" ,Integer.toString(R.drawable.fslogo), Integer.toString(R.raw.fslogo));
     }
 
     @Override
     public void initCallback() {
-        this.texIDHuman = this.sakuraManager.getTextureID(R.drawable.human, R.raw.human);
+        this.texIDStreet	= this.sakuraManager.getTextureID(R.drawable.street, R.raw.street);
+        this.texIDHuman     = this.sakuraManager.getTextureID(R.drawable.human, R.raw.human);
+        this.texIDFslogo	= this.sakuraManager.getTextureID(R.drawable.fslogo, R.raw.fslogo);
     }
 
     @Override

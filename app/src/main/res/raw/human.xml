@@ -8,4 +8,5 @@
     <char name="human6"			x="0"	y="148"	w="93"	h="148" />
     <char name="human7"			x="93"	y="148"	w="93"	h="148" />
     <char name="human8"			x="186"	y="148"	w="93"	h="148" />
+    <char name="title"          x="0"   y="296" w="280" h="50"  />
 </texture>

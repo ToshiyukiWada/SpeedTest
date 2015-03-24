@@ -1,5 +1,17 @@
 package android.futuresoftware.jp.speedtest;
 
+import android.futuresoftware.jp.speedtest.scene.game.GameProcess;
+import android.futuresoftware.jp.speedtest.scene.game.GameRenderer;
+import android.futuresoftware.jp.speedtest.scene.game.GameScene;
+import android.futuresoftware.jp.speedtest.scene.menu.MenuProcess;
+import android.futuresoftware.jp.speedtest.scene.menu.MenuRenderer;
+import android.futuresoftware.jp.speedtest.scene.menu.MenuScene;
+import android.futuresoftware.jp.speedtest.scene.score.ScoreProcess;
+import android.futuresoftware.jp.speedtest.scene.score.ScoreRenderer;
+import android.futuresoftware.jp.speedtest.scene.score.ScoreScene;
+import android.futuresoftware.jp.speedtest.scene.shop.ShopProcess;
+import android.futuresoftware.jp.speedtest.scene.shop.ShopRenderer;
+import android.futuresoftware.jp.speedtest.scene.shop.ShopScene;
 import android.futuresoftware.jp.speedtest.scene.splash.SplashProcess;
 import android.futuresoftware.jp.speedtest.scene.splash.SplashRenderer;
 import android.futuresoftware.jp.speedtest.scene.splash.SplashScene;
@@ -46,9 +58,13 @@ public class MainActivity extends SakuraActivity
         this.sakuraManager.setAdMob("ca-app-pub-2487912231582475/9419668346", SAKURA.ADMOB_VERTICAL_POSITION.BOTTOM, 320, 50);
 
         // シーン追加・定義
-        this.sakuraManager.addScene(new SplashScene("SPLASH",  new SplashRenderer() , new SplashProcess(), null));
-        this.sakuraManager.addScene(new TitleScene("TITLE",  new TitleRenderer() , new TitleProcess(), null));
-        this.sakuraManager.addScene(new TestScene("TEST",  new TestRenderer() , new TestProcess(), null));
+        this.sakuraManager.addScene(new SplashScene ("SPLASH"   ,  new SplashRenderer()     , new SplashProcess()   , null));
+        this.sakuraManager.addScene(new TitleScene  ("TITLE"    ,  new TitleRenderer()      , new TitleProcess()    , null));
+        this.sakuraManager.addScene(new MenuScene   ("MENU"     ,  new MenuRenderer()       , new MenuProcess()     , null));
+        this.sakuraManager.addScene(new GameScene   ("GAME"     ,  new GameRenderer()       , new GameProcess()     , null));
+        this.sakuraManager.addScene(new ScoreScene  ("SCORE"    ,  new ScoreRenderer()      , new ScoreProcess()    , null));
+        this.sakuraManager.addScene(new ShopScene   ("SHOP"     ,  new ShopRenderer()       , new ShopProcess()     , null));
+        this.sakuraManager.addScene(new TestScene   ("TEST"     ,  new TestRenderer()       , new TestProcess()     , null));
 
         //---------------------------------------------------------------------
         // 描画開始

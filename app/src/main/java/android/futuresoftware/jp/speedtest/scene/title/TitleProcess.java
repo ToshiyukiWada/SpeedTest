@@ -28,7 +28,7 @@ public class TitleProcess extends SceneProcessBase {
     public void process(float frametime, List<SakuraTouchManager.TouchEvent> touchEvents) {
 
         this.transitTime    += frametime;
-        this.humanAnimation += (frametime * 15);
+        this.humanAnimation += (frametime * 12);
         if (this.humanAnimation > 7.0f){ this.humanAnimation -= 7.0f; }
     }
 

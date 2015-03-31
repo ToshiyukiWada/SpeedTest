@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<texture>
+    <char name="menuFrame"		        x="0"	y="0"	w="180"	h="450" />
+    <char name="menuFrameTouched"		x="180"	y="0"	w="180"	h="450" />
+    <char name="menuFrameDisabled"		x="360"	y="0"	w="180"	h="450" />
+</texture>

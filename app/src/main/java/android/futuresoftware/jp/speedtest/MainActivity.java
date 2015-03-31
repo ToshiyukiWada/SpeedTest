@@ -3,6 +3,7 @@ package android.futuresoftware.jp.speedtest;
 import android.futuresoftware.jp.speedtest.scene.game.GameProcess;
 import android.futuresoftware.jp.speedtest.scene.game.GameRenderer;
 import android.futuresoftware.jp.speedtest.scene.game.GameScene;
+import android.futuresoftware.jp.speedtest.scene.menu.MenuButton;
 import android.futuresoftware.jp.speedtest.scene.menu.MenuProcess;
 import android.futuresoftware.jp.speedtest.scene.menu.MenuRenderer;
 import android.futuresoftware.jp.speedtest.scene.menu.MenuScene;
@@ -44,7 +45,7 @@ public class MainActivity extends SakuraActivity
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);		// フルスクリーンでの呼び出し
         requestWindowFeature(Window.FEATURE_NO_TITLE);							// タイトルの非表示
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);	// 省電力モードOFF
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);                      // ボリュームはボリュームボタンを有効にする
 
         // アプリケーション定義
         this.init("UITest");
@@ -60,7 +61,7 @@ public class MainActivity extends SakuraActivity
         // シーン追加・定義
         this.sakuraManager.addScene(new SplashScene ("SPLASH"   ,  new SplashRenderer()     , new SplashProcess()   , null));
         this.sakuraManager.addScene(new TitleScene  ("TITLE"    ,  new TitleRenderer()      , new TitleProcess()    , null));
-        this.sakuraManager.addScene(new MenuScene   ("MENU"     ,  new MenuRenderer()       , new MenuProcess()     , null));
+        this.sakuraManager.addScene(new MenuScene   ("MENU"     ,  new MenuRenderer()       , new MenuProcess()     , new MenuButton()));
         this.sakuraManager.addScene(new GameScene   ("GAME"     ,  new GameRenderer()       , new GameProcess()     , null));
         this.sakuraManager.addScene(new ScoreScene  ("SCORE"    ,  new ScoreRenderer()      , new ScoreProcess()    , null));
         this.sakuraManager.addScene(new ShopScene   ("SHOP"     ,  new ShopRenderer()       , new ShopProcess()     , null));

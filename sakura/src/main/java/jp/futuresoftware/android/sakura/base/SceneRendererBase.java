@@ -8,12 +8,15 @@ public abstract class SceneRendererBase extends SakuraBase
 {
 	protected SceneBase scene;
 	protected SceneProcessBase process;
+	protected SceneButtonBase button;
+
 	protected float frametime;
 	private int count;
 	
 	public void setScene(SceneBase scene)				{ this.scene	= scene; }
 	public void setProcess(SceneProcessBase process)	{ this.process	= process; }
-	
+	public void setButton(SceneButtonBase button)		{ this.button	= button; }
+
 	public void setFrametime(float frametime)			{ this.frametime	= frametime; }
 	
 	public abstract void init(GL10 gl);						// 描画スレッドでの初期化処理(基本的には使用しない)
@@ -85,13 +88,13 @@ public abstract class SceneRendererBase extends SakuraBase
 	// drawButto系
 	//
 	//=========================================================================
-	protected void drawButton(GL10 gl, int textureID, int buttonHandler,  boolean isCenter, int x, int y)
+	protected void drawButton(GL10 gl, int buttonIndex,  boolean isCenter, int x, int y)
 	{
-		this.sakuraManager.getSakuraDraw().drawButton(gl, textureID, buttonHandler, isCenter, x, y, 100, -1, -1);
+		this.sakuraManager.getSakuraDraw().drawButton(gl, buttonIndex, isCenter, x, y, 100, -1, -1);
 	}
-	protected void drawButton(GL10 gl, int textureID, int buttonHandler,  boolean isCenter, int x, int y, int width, int height)
+	protected void drawButton(GL10 gl, int buttonIndex,  boolean isCenter, int x, int y, int width, int height)
 	{
-		this.sakuraManager.getSakuraDraw().drawButton(gl, textureID, buttonHandler, isCenter, x, y, 100, width, height);
+		this.sakuraManager.getSakuraDraw().drawButton(gl, buttonIndex, isCenter, x, y, 100, width, height);
 	}
 
 	//=========================================================================

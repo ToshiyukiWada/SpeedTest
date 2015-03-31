@@ -2,6 +2,7 @@ package jp.futuresoftware.android.sakura.base;
 
 import java.util.List;
 
+import jp.futuresoftware.android.sakura.core.SakuraTouchManager;
 import jp.futuresoftware.android.sakura.core.SakuraTouchManager.TouchEvent;
 
 /**
@@ -16,15 +17,19 @@ public abstract class SceneProcessBase extends SakuraBase
 	// メンバ変数定義
 	//-------------------------------------------------------------------------
 	protected SceneBase scene;
-	
+	protected SceneRendererBase renderer;
+	protected SceneButtonBase button;
+
+    protected int touchCount;
+    protected SakuraTouchManager.TouchEvent touchEvent;
+
 	//-------------------------------------------------------------------------
 	// メソッド定義
 	//-------------------------------------------------------------------------
-	/**
-	 * @param scene
-	 */
 	public void setScene(SceneBase scene)				{ this.scene	= scene; }
-	
+	public void setRenderer(SceneRendererBase renderer)	{ this.renderer = renderer; }
+	public void setButton(SceneButtonBase button)		{ this.button	= button; }
+
 	/**
 	 * 戻る処理のハック
 	 */

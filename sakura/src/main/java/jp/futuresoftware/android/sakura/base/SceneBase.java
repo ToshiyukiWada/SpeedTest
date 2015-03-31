@@ -8,13 +8,20 @@ import jp.futuresoftware.android.sakura.queue.base.ThreadQueueBase;
 
 public abstract class SceneBase extends SakuraBase
 {
-	private String sceneID;
-	private String sceneName;
+	private String sceneID;									// シーンID
+	private String sceneName;								// シーン名
 	
-	private SceneRendererBase sceneRendererBase;
-	private SceneProcessBase sceneProcessBase;
-	private SceneButtonBase sceneButtonBase;
-	
+	private SceneRendererBase sceneRendererBase;			// レンダラー
+	private SceneProcessBase sceneProcessBase;				// プロセス
+	private SceneButtonBase sceneButtonBase;				// ボタンイベント
+
+	/**
+	 *
+	 * @param sceneName
+	 * @param sceneRendererBase
+	 * @param sceneProcessBase
+	 * @param sceneButtonBase
+	 */
 	public SceneBase(String sceneName, SceneRendererBase sceneRendererBase, SceneProcessBase sceneProcessBase, SceneButtonBase sceneButtonBase)
 	{
 		this.sceneID			= UUID.randomUUID().toString();

@@ -1,5 +1,7 @@
 package jp.futuresoftware.android.sakura.texture;
 
+import android.graphics.Bitmap;
+
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -9,9 +11,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.graphics.Bitmap;
-
-import jp.futuresoftware.android.sakura.base.EventInterface;
 import jp.futuresoftware.android.sakura.base.SceneBase;
 import jp.futuresoftware.android.sakura.base.SceneProcessBase;
 import jp.futuresoftware.android.sakura.common.RecursiveNode;
@@ -23,10 +22,9 @@ import jp.futuresoftware.android.sakura.common.RecursiveNode;
 public class TextureManager
 {
 	/**
-	 * リフレクションを使った、int配列を使ったメンバ変数へのTextureIndexの格納
-	 * 
+	 *
 	 * @param sceneBase
-	 * @param textureName
+	 * @param textureID
 	 * @param textureIndexMemberName
 	 * @param es
 	 */
@@ -86,9 +84,7 @@ public class TextureManager
 	private int textureBitmapHeight;					// テクスチャ元画像の高さ(幅と一緒なはず)
 	private ArrayList<TextureCharacter> characters;		// このテクスチャに定義されているキャラクター一覧(すばやくアクセスできる為に配列に格納)
 	private Map<String, Integer> charactersMap;			// 上記配列に対してキャラクター名で問合せできるように連想配列でインデックスを保持する
-	private ArrayList<TextureButton> buttons;			// このテクスチャに定義されているキャラクターボタン一覧(すばやくアクセスできる為に配列に格納)
-	private Map<String, Integer> buttonsMap;			// 上記配列に対してキャラクターボタン名で問合せできるように連想配列でインデックスを保持する
-	
+
 	private int maxBurstSetCount;						// 高速描画で保持できる描画指示の最大数
 	private int burstInformationCount;					//　現在格納中の高速描画のインデックス 
 	private BurstInformation[] burstInformations;		// 高速描画の座標等の情報を保持しておく配列
@@ -101,11 +97,11 @@ public class TextureManager
 	private FloatBuffer coordBuffer;					// テクスチャ座標をOpenGLに転送する形式にしたもの
 
 	/**
-	 * コンストラクタ
-	 * 
-	 * @param textureName
-	 * @param textureID
+	 *
+	 * @param glTextureID
+	 * @param textureBitmapID
 	 * @param textureBitmap
+	 * @param characterXmlStreamID
 	 * @param characterXmlStream
 	 */
 	public TextureManager(int glTextureID, int textureBitmapID, Bitmap textureBitmap, int characterXmlStreamID, InputStream characterXmlStream)
@@ -114,10 +110,13 @@ public class TextureManager
 	}
 
 	/**
-	 * コンストラクタ
-	 * 
-	 * @param textureName
-	 * @param textureID
+	 *
+	 * @param glTextureID
+	 * @param textureBitmapID
+	 * @param textureBitmapWidth
+	 * @param textureBitmapHeight
+	 * @param characterXmlStreamID
+	 * @param characterXmlStream
 	 */
 	public TextureManager(int glTextureID, int textureBitmapID, int textureBitmapWidth, int textureBitmapHeight, int characterXmlStreamID, InputStream characterXmlStream)
 	{
@@ -125,12 +124,12 @@ public class TextureManager
 	}
 
 	/**
-	 * コンストラクタ(共通)
-	 * 
-	 * @param textureName
-	 * @param textureID
+	 *
+	 * @param glTextureID
+	 * @param textureBitmapID
 	 * @param textureBitmapWidth
 	 * @param textureBitmapHeight
+	 * @param characterXmlStreamID
 	 * @param characterXmlStream
 	 */
 	private void constructor(int glTextureID, int textureBitmapID, int textureBitmapWidth, int textureBitmapHeight, int characterXmlStreamID, InputStream characterXmlStream)
@@ -143,8 +142,6 @@ public class TextureManager
 		this.textureBitmapHeight	= textureBitmapHeight;
 		this.characters				= new ArrayList<TextureCharacter>();
 		this.charactersMap			= new HashMap<String, Integer>();
-		this.buttons				= new ArrayList<TextureButton>();
-		this.buttonsMap				= new HashMap<String, Integer>();
 		this.maxBurstSetCount		= 0;
 
 		// キャラクター情報を生成する
@@ -170,25 +167,6 @@ public class TextureManager
 					}
 					catch(NumberFormatException nfe){}
 				}
-				if (rootNode.count("buttons") == 1)
-				{
-					RecursiveNode buttonsNode	= rootNode.n("buttons", 0);
-					for (int count = 0 ; count < buttonsNode.count("button") ; count++)
-					{
-						RecursiveNode buttonNode	= buttonsNode.n("button", count);
-						String name					= buttonNode.getAttributes().getNamedItem("name").getTextContent();
-						
-						String normalChar			= "";
-						String disableChar			= "";
-						String touchChar			= "";
-						try { normalChar = buttonNode.getAttributes().getNamedItem("normal").getTextContent(); } catch(Exception exp){ normalChar = ""; } 
-						try { disableChar = buttonNode.getAttributes().getNamedItem("disable").getTextContent(); } catch(Exception exp){ disableChar = ""; }
-						try { touchChar = buttonNode.getAttributes().getNamedItem("touch").getTextContent(); } catch(Exception exp){ touchChar = ""; }
-						
-						addButton(name, normalChar, disableChar, touchChar);
-					}
-				}
-	
 			}
 			catch(Exception exp){}
 		}
@@ -246,19 +224,6 @@ public class TextureManager
 	}
 
 	/**
-	 * @param name
-	 * @param normalCharacterName
-	 * @param disableCharacterName
-	 * @param touchCharacterName
-	 */
-	public void addButton(String name, String normalCharacterName, String disableCharacterName, String touchCharacterName)
-	{
-		TextureButton textureButton				= new TextureButton(this, normalCharacterName, disableCharacterName, touchCharacterName);
-		this.buttons.add(textureButton);
-		this.buttonsMap.put(name, this.buttons.size() - 1);
-	}
-
-	/**
 	 * @return
 	 */
 	public int getGLTextureID()
@@ -310,39 +275,6 @@ public class TextureManager
 	}
 
 	/**
-	 * @param index
-	 * @return
-	 */
-	public TextureButton getButton(int index)
-	{
-		if (index == -1){ return null; }
-		return this.buttons.get(index);
-	}
-
-	/**
-	 * @param buttonName
-	 * @return
-	 */
-	public TextureButton getButton(String buttonName)
-	{
-		if ((this.buttonsMap.get(buttonName) == null?-1:this.buttonsMap.get(buttonName).intValue()) == -1){ return null; }
-		return this.buttons.get(this.buttonsMap.get(buttonName));
-	}
-	
-	/**
-	 * @param buttonName
-	 * @return
-	 */
-	public int getButtonIndex(String buttonName)
-	{
-		return (this.buttonsMap.get(buttonName) == null?-1:this.buttonsMap.get(buttonName).intValue());
-	}
-	
-	public ArrayList<TextureButton> getButtons() {
-		return buttons;
-	}
-
-	/**
 	 * @return
 	 */
 	public int getTextureBitmapWidth() {
@@ -367,9 +299,17 @@ public class TextureManager
 		}
 		this.burstInformationCount		= 0;
 	}
-	
+
 	/**
-	 * @param burstInformation
+	 *
+	 * @param textureID
+	 * @param characterIndex
+	 * @param isCenter
+	 * @param x
+	 * @param y
+	 * @param alpha
+	 * @param width
+	 * @param height
 	 */
 	public void addBurstInformation(int textureID, int characterIndex, boolean isCenter, int x, int y, int alpha, int width, int height)
 	{
@@ -500,298 +440,6 @@ public class TextureManager
 
 		public int getHeight() {
 			return height;
-		}
-	}
-	
-	/**
-	 * テクスチャを利用したボタンの表示で利用するボタン１つの情報
-	 * 
-	 * @author toshiyuki
-	 *
-	 */
-	public class TextureButton implements Cloneable
-	{
-		// メンバ変数定義
-		private int normalCharacterIndex;		// 通常時ボタンのテクスチャIndex
-		private int disableCharacterIndex;		// 無効時ボタンのテクスチャIndex
-		private int touchCharacterIndex;		// タッチ中ボタンのテクスチャIndex
-
-		// イベント処理
-		private boolean isDownSignalThrow;		// ダウン時の初期をProcessにも伝達するか否か
-		private EventInterface downEvent;		// ダウン時の処理内容
-		
-		private boolean isUpSignalThrow;		// アップ時の初期をProcessにも伝達するか否か
-		private EventInterface upEvent;			// アップ時の処理内容
-		
-		private boolean isTouchSignalThrow;		// タッチ(ダウン後に同じボタンエリアでアップ)時の初期をProcessにも伝達するか否か
-		private EventInterface touchEvent;		// タッチ(ダウン後に同じボタンエリアでアップ)時の処理内容
-
-		// 状況フラグ
-		private int x;							// 現在ボタンがレンダリングされている座標(X)
-		private int y;							// 現在ボタンがレンダリングされている座標(Y)
-		private int width;						// 現在ボタンがレンダリングされている座標(幅)
-		private int height;						// 現在ボタンがレンダリングされている座標(高さ)
-		private int x2;							// 現在ボタンがレンダリングされている座標(Xの終端)
-		private int y2;							// 現在ボタンがレンダリングされている座標(Yの終端)
-		private int nowCharacterIndex;			// 現在の状況に合わせたボタン状況のインデックス(TextureNameとこれをDrawTextureで表示すれば現在のボタンの表示が行える)
-
-		private int nowPressPointer;			// タッチ中のポインタ(マルチタッチ判定用)
-		
-		//=====================================================================
-		// Clone有効化
-		//=====================================================================
-		public Object clone() throws CloneNotSupportedException {
-			return super.clone();
-		}
-		
-		/**
-		 * コンストラクタ
-		 * 
-		 * @param textureManager
-		 * @param normalCharacterName
-		 * @param disableCharacterName
-		 * @param touchCharacterName
-		 */
-		public TextureButton(TextureManager textureManager, String normalCharacterName, String disableCharacterName, String touchCharacterName)
-		{
-			// Indexに変換する
-			this.normalCharacterIndex		= textureManager.getCharacterIndex(normalCharacterName);		// 通常時ボタンのテクスチャIndex
-			this.disableCharacterIndex		= textureManager.getCharacterIndex(disableCharacterName);		// 無効時ボタンのテクスチャIndex
-			this.touchCharacterIndex		= textureManager.getCharacterIndex(touchCharacterName);			// タッチ中ボタンのテクスチャIndex
-			
-			// イベント内容等をクリアする
-			this.clear();
-			
-			// 座標系情報のクリア
-			this.x							= -1;
-			this.y							= -1;
-			this.width						= -1;
-			this.height						= -1;
-			this.x2							= -1;
-			this.y2							= -1;
-			this.nowCharacterIndex			= this.normalCharacterIndex;
-		}
-
-		/**
-		 * @return
-		 */
-		public int getNormalCharacterIndex() {
-			return normalCharacterIndex;
-		}
-
-		/**
-		 * @return
-		 */
-		public int getDisableCharacterIndex() {
-			return disableCharacterIndex;
-		}
-
-		/**
-		 * @return
-		 */
-		public int getTouchCharacterIndex() {
-			return touchCharacterIndex;
-		}
-		
-		/**
-		 * @param isDownSignalThrow
-		 * @param downEvent
-		 */
-		public void registDownEvent(boolean isDownSignalThrow, EventInterface downEvent)
-		{
-			this.isDownSignalThrow		= isDownSignalThrow;
-			this.downEvent				= downEvent;
-		}
-	
-		/**
-		 * @param isUpSignalThrow
-		 * @param upEvent
-		 */
-		public void registUpEvent(boolean isUpSignalThrow, EventInterface upEvent)
-		{
-			this.isUpSignalThrow		= isUpSignalThrow;
-			this.upEvent				= upEvent;
-		}
-		
-		/**
-		 * @param isTouchSignalThrow
-		 * @param touchEvent
-		 */
-		public void registTouchEvent(boolean isTouchSignalThrow, EventInterface touchEvent)
-		{
-			this.isTouchSignalThrow		= isTouchSignalThrow;
-			this.touchEvent				= touchEvent;
-		}
-		
-		/**
-		 * @param pointer
-		 */
-		public void onDown(int pointer)
-		{
-			// 既に異なる指でタッチされている場合は無視する
-			if (this.nowPressPointer != -1){ return; }
-			
-			// タッチしている指を保存してイベントをキックする
-			this.restraintDown(pointer);
-			if(this.downEvent != null){ this.downEvent.event(); }
-		}
-		
-		/**
-		 * @param pointer
-		 */
-		public void onUp(int pointer, boolean isTouch)
-		{
-			// タッチしている指を解除する
-			if (isTouch){ this.onTouch(); }
-			this.releaseDown();
-			this.nowPressPointer		= -1;
-			if (this.upEvent != null){ this.upEvent.event(); }
-		}
-		
-		/**
-		 * 
-		 */
-		public void onTouch()
-		{
-			if (this.touchEvent != null){ this.touchEvent.event(); }
-		}
-
-		/**
-		 * @param pointer
-		 */
-		public void restraintDown(int pointer)
-		{
-			this.nowCharacterIndex		= this.touchCharacterIndex;
-			this.nowPressPointer		= pointer;
-		}
-		
-		/**
-		 * 
-		 */
-		public void releaseDown()
-		{
-			this.nowCharacterIndex		= this.normalCharacterIndex;
-		}
-
-		/**
-		 * @return
-		 */
-		public boolean isDownSignalThrow() {
-			return isDownSignalThrow;
-		}
-
-		/**
-		 * @return
-		 */
-		public EventInterface getDownEvent() {
-			return downEvent;
-		}
-
-		/**
-		 * @return
-		 */
-		public boolean isUpSignalThrow() {
-			return isUpSignalThrow;
-		}
-
-		/**
-		 * @return
-		 */
-		public EventInterface getUpEvent() {
-			return upEvent;
-		}
-
-		/**
-		 * @return
-		 */
-		public boolean isTouchSignalThrow() {
-			return isTouchSignalThrow;
-		}
-
-		/**
-		 * @return
-		 */
-		public EventInterface getTouchEvent() {
-			return touchEvent;
-		}
-		
-		public void set(int x, int y, int width, int height)
-		{
-			this.x		= x;
-			this.y		= y;
-			this.width	= width;
-			this.height	= height;
-			this.x2		= x + width;
-			this.y2		= y + height;
-		}
-		
-		/**
-		 * @return
-		 */
-		public int getX() {
-			return x;
-		}
-
-		/**
-		 * @return
-		 */
-		public int getX2() {
-			return x2;
-		}
-
-		/**
-		 * @return
-		 */
-		public int getY() {
-			return y;
-		}
-
-		/**
-		 * @return
-		 */
-		public int getY2() {
-			return y2;
-		}
-		
-		/**
-		 * @return
-		 */
-		public int getWidth() {
-			return width;
-		}
-
-		/**
-		 * @return
-		 */
-		public int getHeight() {
-			return height;
-		}
-		
-		/**
-		 * @return
-		 */
-		public int getNowCharacterIndex() {
-			return nowCharacterIndex;
-		}
-
-		/**
-		 * @return
-		 */
-		public int getNowPressPointer() {
-			return nowPressPointer;
-		}
-
-		/**
-		 * 
-		 */
-		public void clear()
-		{
-			this.isDownSignalThrow		= true;
-			this.downEvent				= null;
-			this.isUpSignalThrow		= true;
-			this.upEvent				= null;
-			this.isTouchSignalThrow		= true;
-			this.touchEvent				= null;
 		}
 	}
 	

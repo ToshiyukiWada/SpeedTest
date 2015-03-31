@@ -1,15 +1,15 @@
 package jp.futuresoftware.android.sakura.core;
 
+import android.annotation.SuppressLint;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import jp.futuresoftware.android.sakura.SakuraActivity;
 import jp.futuresoftware.android.sakura.SakuraManager;
-
-import android.annotation.SuppressLint;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
 
 /**
  * @author toshiyuki
@@ -43,7 +43,7 @@ public class SakuraTouchManager implements OnTouchListener
 	{
 		this.sakuraManager			= SakuraActivity.getSakuraManager();
 	
-		Pool.PoolObjectFactory<TouchEvent> factory = new Pool.PoolObjectFactory<SakuraTouchManager.TouchEvent>()
+		Pool.PoolObjectFactory<TouchEvent> factory = new Pool.PoolObjectFactory<TouchEvent>()
 		{
 			@Override
 			public TouchEvent createObject()
@@ -98,8 +98,8 @@ public class SakuraTouchManager implements OnTouchListener
 						touchEvent					= touchEventPool.newObject();
 						touchEvent.type				= TouchEvent.TOUCH_DOWN;
 						touchEvent.pointer			= pointerID;
-						touchEvent.x				= touchX[count] = (int)(event.getX(count) * scaleX);
-						touchEvent.y				= touchY[count] = (int)(event.getY(count) * scaleY);
+						touchEvent.x = touchX[count] = (int) (event.getX(count) * scaleX);
+						touchEvent.y = touchY[count] = (int) (event.getY(count) * scaleY);
 						this.isTouched[count]		= true;
 						this.touchPointerID[count]	= pointerID;
 						this.touchEventsBuffer.add(touchEvent);
@@ -110,8 +110,8 @@ public class SakuraTouchManager implements OnTouchListener
 						touchEvent					= touchEventPool.newObject();
 	                    touchEvent.type				= TouchEvent.TOUCH_UP;
 	                    touchEvent.pointer			= pointerID;
-	                    touchEvent.x				= touchX[count] = (int)(event.getX(count) * scaleX);
-	                    touchEvent.y				= touchY[count] = (int)(event.getY(count) * scaleY);
+						touchEvent.x = touchX[count] = (int) (event.getX(count) * scaleX);
+						touchEvent.y = touchY[count] = (int) (event.getY(count) * scaleY);
 	                    this.isTouched[count]		= false;
 	                    this.touchPointerID[count]	= -1;
 	                    this.touchEventsBuffer.add(touchEvent);
@@ -120,8 +120,8 @@ public class SakuraTouchManager implements OnTouchListener
 	                    touchEvent					= touchEventPool.newObject();
 	                    touchEvent.type				= TouchEvent.TOUCH_DRAGGED;
 	                    touchEvent.pointer			= pointerID;
-	                    touchEvent.x				= touchX[count] = (int)(event.getX(count) * scaleX);
-	                    touchEvent.y				= touchY[count] = (int)(event.getY(count) * scaleY);
+						touchEvent.x = touchX[count] = (int) (event.getX(count) * scaleX);
+						touchEvent.y = touchY[count] = (int) (event.getY(count) * scaleY);
 	                    this.isTouched[count]		= true;
 	                    this.touchPointerID[count]	= pointerID;
 	                    this.touchEventsBuffer.add(touchEvent);

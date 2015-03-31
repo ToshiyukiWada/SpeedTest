@@ -1,6 +1,7 @@
 package jp.futuresoftware.android.sakura;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
@@ -15,15 +16,17 @@ import javax.microedition.khronos.opengles.GL11;
 
 import jp.futuresoftware.android.sakura.base.QueueBase;
 import jp.futuresoftware.android.sakura.base.SceneBase;
+import jp.futuresoftware.android.sakura.base.SceneButtonProcessBase;
+import jp.futuresoftware.android.sakura.connection.bluetooth.BluetoothManager;
 import jp.futuresoftware.android.sakura.core.SakuraDraw;
 import jp.futuresoftware.android.sakura.core.SakuraProcess;
 import jp.futuresoftware.android.sakura.core.SakuraRendererThread;
 import jp.futuresoftware.android.sakura.core.SakuraTouchManager;
 import jp.futuresoftware.android.sakura.core.SakuraView;
+import jp.futuresoftware.android.sakura.information.TextureButtonInformation;
 import jp.futuresoftware.android.sakura.queue.base.RendererQueueBase;
 import jp.futuresoftware.android.sakura.texture.SakuraTexture;
 import jp.futuresoftware.android.sakura.texture.TextureManager;
-import jp.futuresoftware.android.sakura.connection.bluetooth.BluetoothManager;
 
 /**
  * Created by toshiyuki on 2015/03/19.
@@ -43,14 +46,14 @@ public class SakuraManager
     private SakuraRendererThread sakuraRendererThread;		// SakuraRendererThread
     private SakuraDraw sakuraDraw;							// Draw
     private SakuraTouchManager sakuraTouchManager;			// SakuraTouchManager
-    private SAKURA.STATUS status;									// 現在のステータス
-    private SAKURA.STATUS_DETAIL statusDetail;						// 現在のステータス(初期処理・終了処理の場合のスレッド系の状態)
+    private SAKURA.STATUS status;							// 現在のステータス
+    private SAKURA.STATUS_DETAIL statusDetail;				// 現在のステータス(初期処理・終了処理の場合のスレッド系の状態)
     private int startQueueCounter;							// キュー未処理件数
     private int finishQueueCounter;							// キュー処理済件数
     private ArrayList<QueueBase> initQueueList;				// 初期化処理のキューリスト
     private HashMap<String, Object> saveDatas;				// アプリケーション内のデータ保持
     private ArrayList<RendererQueueBase> rendererQueueList;	// 描画処理のキューリスト
-    private int targetFps;
+    private int targetFps;                                  // 目標FPS
 
     // 開発オプション系
     private boolean isDebug;								// デバッグモード起動か否か
@@ -82,12 +85,13 @@ public class SakuraManager
     private int glLayoutEndRealPositionY;					//
     private int adMobLayoutWidth;							// adMobレイアウトの幅
     private int adMobLayoutHeight;							// adMobレイアウトの高さ
+    private boolean isPortrait;                             // 縦長画面か否か
 
     // シーン系
-    private HashMap<String, SceneBase> scenes;				// シーン名とシーンを管理する連想配列
-    private SceneBase nowScene;								// 現在表示中のシーン
-    private String nextSceneName;							// 次に表示する予約が入っているシーン名
-    private ArrayList<TextureManager.TextureButton> nowSceneButtons;		// このシーンで適用されているボタン(このシーンで読み込まれているTextureManagerに属するボタン定義をまとめたもの)
+    private HashMap<String, SceneBase> scenes;				            		// シーン名とシーンを管理する連想配列
+    private SceneBase nowScene;								            		// 現在表示中のシーン
+    private String nextSceneName;							            		// 次に表示する予約が入っているシーン名
+    private ArrayList<TextureButtonInformation> nowTextureButtonInformations;	// このシーンで適用されているボタン(このシーンで読み込まれているTextureManagerに属するボタン定義をまとめたもの)
 
     // テクスチャ管理系
     private ArrayList<TextureManager> textures;				// 全てのテクスチャを管理する
@@ -147,7 +151,7 @@ public class SakuraManager
 
         this.isDebug					= false;
 
-        this.nowSceneButtons			= new ArrayList<TextureManager.TextureButton>();
+        this.nowTextureButtonInformations	= new ArrayList<TextureButtonInformation>();
 
         this.textures					= new ArrayList<TextureManager>();
         this.sakuraTextureFont			= "";
@@ -165,6 +169,11 @@ public class SakuraManager
         this.adMobVerticalPosition		= SAKURA.ADMOB_VERTICAL_POSITION.TOP;
         this.adMobWidthDp				= 0;
         this.adMobHeightDp				= 0;
+
+        this.isPortrait                 = true;
+        Configuration configuration     = sakuraActivity.getResources().getConfiguration();
+        if(configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)        { this.isPortrait   = false;  }
+        else if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT)   { this.isPortrait   = true; }
     }
 
     /**
@@ -300,17 +309,21 @@ public class SakuraManager
             sceneBase.getSceneRenderer().setSakuraManager(this);
             sceneBase.getSceneRenderer().setScene(sceneBase);
             sceneBase.getSceneRenderer().setProcess(sceneBase.getSceneProcess());
+			sceneBase.getSceneRenderer().setButton(sceneBase.getSceneButton());
         }
         if (sceneBase.getSceneProcess() != null)
         {
             sceneBase.getSceneProcess().setSakuraManager(this);
             sceneBase.getSceneProcess().setScene(sceneBase);
+			sceneBase.getSceneProcess().setRenderer(sceneBase.getSceneRenderer());
+			sceneBase.getSceneProcess().setButton(sceneBase.getSceneButton());
         }
         if (sceneBase.getSceneButton() != null)
         {
             sceneBase.getSceneButton().setSakuraManager(this);
             sceneBase.getSceneButton().setScene(sceneBase);
             sceneBase.getSceneButton().setProcess(sceneBase.getSceneProcess());
+			sceneBase.getSceneButton().setRenderer(sceneBase.getSceneRenderer());
         }
 
         // シーン配列にシーン情報を登録する
@@ -567,6 +580,8 @@ public class SakuraManager
         this.adMobHeightDp = adMobHeightDp;
     }
 
+    public boolean isPortrait(){ return this.isPortrait; }
+
     //=========================================================================
     //
     // AdMob
@@ -722,18 +737,23 @@ public class SakuraManager
                 if (this.statusDetail.equals(SAKURA.STATUS_DETAIL.ACTIVE))
                 {
                     // このシーンで利用(監視)するボタン一覧の削除
-                    for (int countButtons = 0 ; countButtons < this.nowSceneButtons.size() ; countButtons++)
+                    for (int countButtons = 0 ; countButtons < this.nowTextureButtonInformations.size() ; countButtons++)
                     {
                         // ボタンに紐付けられているイベントを全て削除
-                        this.nowSceneButtons.get(countButtons).clear();
+                        this.nowTextureButtonInformations.get(countButtons).clear();
                     }
-                    this.nowSceneButtons.clear();
+                    this.nowTextureButtonInformations.clear();
 
                     // 初期化処理起動
                     this.sakuraView.getSakuraRenderer().runInit();			// Rendererの初期化処理を起動する
                     this.nowScene.getSceneProcess().init();					// Processの初期化処理を起動する
                     this.nowScene.initCallback();							// Sceneの初期化処理を起動する
-                    if (this.nowScene.getSceneButton() != null)	{ this.nowScene.getSceneButton().doButton(); }	// ボタン定義がある場合はボタンの登録処理を起動する
+
+                    if (this.nowScene.getSceneButton() != null)             // ボタン定義がある場合はボタンの登録処理を起動する
+                    {
+                        this.nowScene.getSceneButton().init();              // 初期化処理
+                        this.nowScene.getSceneButton().doButton();          // ボタン登録処理
+                    }
 
                     // 初期化処理が終わっていたら通常動作に遷移
                     this.status = SAKURA.STATUS.ACTIVE;
@@ -1003,9 +1023,10 @@ public class SakuraManager
         this.playSound(this.getSoundID(SoundName));
     }
 
-    /**
-     * @param SoundID
-     */
+	/**
+	 *
+	 * @param soundID
+	 */
     public void playSound(int soundID)
     {
         try
@@ -1113,49 +1134,35 @@ public class SakuraManager
         this.rendererQueueList.add(rendererQueueBase);
     }
 
-    //=========================================================================
+	/**
+	 *
+	 */
+	public void clearRendererQueue()
+	{
+		this.rendererQueueList.clear();
+	}
+
+	//=========================================================================
     //
     // Buttons
     // このシーンに対して利用するボタン情報を追加し、その追加インデックスを返却する
     //
     //=========================================================================
-    /**
-     * @param textureName
-     * @param buttonIndex
-     * @return
-     */
-    public int addButton(int textureID, String buttonName)
+    public int addButton(int textureID, int normalCharacterIndex, int touchCharacterIndex, int disableCharacterIndex, SceneButtonProcessBase sceneButtonProcessBase, int width, int height)
     {
-        try
-        {
-            this.nowSceneButtons.add((TextureManager.TextureButton) this.textures.get(textureID).getButtons().get(this.textures.get(textureID).getButtonIndex(buttonName)).clone());
-            return this.nowSceneButtons.size() - 1;
-        }
-        catch(Exception exp){}
-        return -1;
+		this.nowTextureButtonInformations.add(new TextureButtonInformation(textureID, normalCharacterIndex, touchCharacterIndex, disableCharacterIndex, sceneButtonProcessBase, width, height));
+		return this.nowTextureButtonInformations.size() - 1;
     }
 
-    /**
-     * @param nowSceneButtonIndex
-     * @return
-     */
-    public TextureManager.TextureButton getButton(int nowSceneButtonIndex)
+    public TextureButtonInformation getTextureButtonInformation(int buttonIndex)
     {
-        return this.nowSceneButtons.get(nowSceneButtonIndex);
+		return this.nowTextureButtonInformations.get(buttonIndex);
     }
 
     /**
      * @return
      */
-    public ArrayList<TextureManager.TextureButton> getNowSceneButtons() {
-        return nowSceneButtons;
-    }
-
-    /**
-     *
-     */
-    public void clearRendererQueue()
-    {
-        this.rendererQueueList.clear();
+    public ArrayList<TextureButtonInformation> getNowTextureButtonInformations() {
+        return this.nowTextureButtonInformations;
     }
 }

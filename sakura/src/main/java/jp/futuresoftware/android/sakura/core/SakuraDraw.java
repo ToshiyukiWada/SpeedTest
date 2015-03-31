@@ -12,13 +12,12 @@ import jp.futuresoftware.android.sakura.base.ParticleBase;
 import jp.futuresoftware.android.sakura.base.ParticleBase.ParticleBitBase;
 import jp.futuresoftware.android.sakura.texture.TextureManager;
 import jp.futuresoftware.android.sakura.texture.TextureManager.BurstInformation;
-import jp.futuresoftware.android.sakura.texture.TextureManager.TextureButton;
 import jp.futuresoftware.android.sakura.texture.TextureManager.TextureCharacter;
 
 public class SakuraDraw
 {
 	// メンバ変数定義
-	private SakuraManager sakuraMakager;			// SakuraManager
+	private SakuraManager sakuraManager;			// SakuraManager
 	
 	// OpenGLで描画する為に必要な配列の定義
 	private float[] position;						// 描画位置を格納する為の配列
@@ -34,7 +33,7 @@ public class SakuraDraw
 	 */
 	public SakuraDraw(SakuraManager sakuraManager)
 	{
-		this.sakuraMakager		= sakuraManager;
+		this.sakuraManager		= sakuraManager;
 		
 		position			= new float[12];
 		
@@ -113,7 +112,7 @@ public class SakuraDraw
 		//---------------------------------------------------------------------
 		// 表示位置
 		//---------------------------------------------------------------------
-		int virtualHeight	= this.sakuraMakager.getVirtualHeight();
+		int virtualHeight	= this.sakuraManager.getVirtualHeight();
 		
 		float posXS			= 0;
 		float posXE			= 0;
@@ -151,7 +150,7 @@ public class SakuraDraw
 		// VBOによる色・透明度座標の指定
 		if (alpha > 100){ alpha = 100; }
 		if (alpha < 0  ){ alpha =   0; }
-		((GL11)gl).glBindBuffer(GL11.GL_ARRAY_BUFFER, this.sakuraMakager.getAlphaVboIDs()[alpha]);
+		((GL11)gl).glBindBuffer(GL11.GL_ARRAY_BUFFER, this.sakuraManager.getAlphaVboIDs()[alpha]);
 		((GL11)gl).glColorPointer(4, GL10.GL_FLOAT, 0, 0);
 		((GL11)gl).glBindBuffer(GL11.GL_ARRAY_BUFFER, 0);
 		
@@ -164,22 +163,22 @@ public class SakuraDraw
 	
 	public void drawTexture(GL10 gl, int textureID, String characterName, boolean isCenter, int alpha, int x, int y)
 	{
-		TextureManager textureManager		= this.sakuraMakager.getTextures().get(textureID);
+		TextureManager textureManager		= this.sakuraManager.getTextures().get(textureID);
 		drawTexture(gl, textureManager, textureManager.getCharacterIndex(characterName), isCenter, x, y, alpha, -1 ,-1);
 	}
 	public void drawTexture(GL10 gl, int textureID, String characterName, boolean isCenter, int x, int y, int alpha, int width, int height)
 	{
-		TextureManager textureManager		= this.sakuraMakager.getTextures().get(textureID);
+		TextureManager textureManager		= this.sakuraManager.getTextures().get(textureID);
 		drawTexture(gl, textureManager, textureManager.getCharacterIndex(characterName), isCenter, x, y, alpha, width, height);
 	}
 	public void drawTexture(GL10 gl, int textureID, int characterIndex, boolean isCenter, int x, int y, int alpha)
 	{
-		TextureManager textureManager		= this.sakuraMakager.getTextures().get(textureID);
+		TextureManager textureManager		= this.sakuraManager.getTextures().get(textureID);
 		drawTexture(gl, textureManager, characterIndex, isCenter, x, y, alpha, -1 ,-1);
 	}
 	public void drawTexture(GL10 gl, int textureID, int characterIndex, boolean isCenter, int x, int y, int alpha, int width, int height)
 	{
-		TextureManager textureManager		= this.sakuraMakager.getTextures().get(textureID);
+		TextureManager textureManager		= this.sakuraManager.getTextures().get(textureID);
 		drawTexture(gl, textureManager, characterIndex, isCenter, x, y, alpha, width, height);
 	}
 
@@ -198,7 +197,7 @@ public class SakuraDraw
 	 */
 	public void drawAlphaNum(GL10 gl, String text, int x, int y, int alpha)
 	{
-		drawTexture(gl, this.sakuraMakager.getSakuraTexture().getTextureManager(), this.sakuraMakager.getSakuraTexture().getTextureManager().getCharacterIndex(text), false, x, y, alpha, 32 ,32);
+		drawTexture(gl, this.sakuraManager.getSakuraTexture().getTextureManager(), this.sakuraManager.getSakuraTexture().getTextureManager().getCharacterIndex(text), false, x, y, alpha, 32 ,32);
 	}
 	
 	//=========================================================================
@@ -208,11 +207,10 @@ public class SakuraDraw
 	// ------------------------------------------------------------------------
 	// 高速なレンダリング
 	//=========================================================================
+
 	/**
-	 * GLボタンの描画
-	 * 
+	 *
 	 * @param gl
-	 * @param textureName
 	 * @param buttonIndex
 	 * @param isCenter
 	 * @param x
@@ -221,16 +219,13 @@ public class SakuraDraw
 	 * @param width
 	 * @param height
 	 */
-	public void drawButton(GL10 gl, int textureID, int buttonHander, boolean isCenter, int x, int y, int alpha, int width, int height)
+	public void drawButton(GL10 gl, int buttonIndex, boolean isCenter, int x, int y, int alpha, int width, int height)
 	{
-		TextureManager textureManager		= this.sakuraMakager.getTextures().get(textureID);								// テクスチャの取得
-		TextureButton  textureButton		= this.sakuraMakager.getNowSceneButtons().get(buttonHander);
-		TextureCharacter textureCharacter	= textureManager.getCharacter(textureButton.getNowCharacterIndex());
-		if (width == -1 ){ width 			= textureCharacter.getWidth();  }
-		if (height == -1){ height 			= textureCharacter.getHeight(); }
-		if (isCenter)	{ textureButton.set(x - (width / 2), y - (height / 2), width, height); }								//　ボタンの座標情報を最新のものに更新する
-		else			{ textureButton.set(x, y, width, height); }																// ボタンの座標情報を最新のものに更新する
-		this.drawTexture(gl, textureManager, textureButton.getNowCharacterIndex(), isCenter, x, y, alpha, width, height);		// ボタンの描画
+		if (width == -1 ){ width 			= this.sakuraManager.getNowTextureButtonInformations().get(buttonIndex).getWidth();  }
+		if (height == -1){ height 			= this.sakuraManager.getNowTextureButtonInformations().get(buttonIndex).getHeight(); }
+		if (isCenter)	{ this.sakuraManager.getNowTextureButtonInformations().get(buttonIndex).setPosition(x - (width / 2), y - (height / 2), width, height); }		//　ボタンの座標情報を最新のものに更新する
+		else			{ this.sakuraManager.getNowTextureButtonInformations().get(buttonIndex).setPosition(x, y, width, height); }										// ボタンの座標情報を最新のものに更新する
+		this.drawTexture(gl, this.sakuraManager.getTextureButtonInformation(buttonIndex).getTextureID(), this.sakuraManager.getNowTextureButtonInformations().get(buttonIndex).getNowCharacterIndex(), isCenter, x, y, alpha, width, height);		// ボタンの描画
 	}
 
 	//=========================================================================
@@ -251,7 +246,7 @@ public class SakuraDraw
 	{
 		// パーティクルからパーティクルビット情報配列の取得
 		ParticleBitBase[] particleBits	= particleBase.getParticleBits();
-		TextureManager textureManage	= this.sakuraMakager.getTextures().get(particleBase.getTextureID());
+		TextureManager textureManage	= this.sakuraManager.getTextures().get(particleBase.getTextureID());
 
 		// パーティクル処理
 		particleBase.animation(frametime);
@@ -290,8 +285,8 @@ public class SakuraDraw
 			float sizeH			= particleBitBase.getSize() / 2.0f;
 			float vLeft			= centerX - sizeW;
 			float vRight		= centerX + sizeW;
-			float vTop			= this.sakuraMakager.getVirtualHeight() - (centerY + sizeH);
-			float vBottom		= this.sakuraMakager.getVirtualHeight() - (centerY - sizeH);
+			float vTop			= this.sakuraManager.getVirtualHeight() - (centerY + sizeH);
+			float vBottom		= this.sakuraManager.getVirtualHeight() - (centerY - sizeH);
  
 			//ポリゴン1
 			particleBase.getVertices()[vertexIndex++] = vLeft;		// C
@@ -357,7 +352,7 @@ public class SakuraDraw
 	{
 		try
 		{
-			TextureManager textureManage	= this.sakuraMakager.getTextures().get(textureID);
+			TextureManager textureManage	= this.sakuraManager.getTextures().get(textureID);
 			textureManage.addBurstInformation(textureID, characterIndex, isCenter, x, y, alpha, width, height);
 		}
 		catch(Exception exp){}
@@ -365,7 +360,7 @@ public class SakuraDraw
 	
 	public void burstTextureRenderer(GL10 gl, int textureID)
 	{
-		TextureManager textureManage	= this.sakuraMakager.getTextures().get(textureID);
+		TextureManager textureManage	= this.sakuraManager.getTextures().get(textureID);
 		
 		// 処理で利用する変数の定義
 		int vertexIndex = 0;
@@ -388,8 +383,8 @@ public class SakuraDraw
 			float sizeH			= (float)(burstInformation.getHeight()) / 2.0f;
 			float vLeft			= centerX - sizeW;
 			float vRight		= centerX + sizeW;
-			float vTop			= this.sakuraMakager.getVirtualHeight() - (centerY + sizeH);
-			float vBottom		= this.sakuraMakager.getVirtualHeight() - (centerY - sizeH);
+			float vTop			= this.sakuraManager.getVirtualHeight() - (centerY + sizeH);
+			float vBottom		= this.sakuraManager.getVirtualHeight() - (centerY - sizeH);
  
 			//ポリゴン1
 			textureManage.getVertices()[vertexIndex++] = vLeft;		// C

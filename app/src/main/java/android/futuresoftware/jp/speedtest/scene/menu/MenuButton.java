@@ -14,6 +14,7 @@ public class MenuButton extends SceneButtonBase {
 	// メンバ変数定義
     private MenuScene scen;     // 対象シーンクラス
 
+	public int count;
     public int btnMenus[];      // メニューボタン
     public int btnShop;         // ショップボタン
     public int btnWebsite;      // WEBサイトボタン
@@ -24,7 +25,7 @@ public class MenuButton extends SceneButtonBase {
     @Override
     public void init() {
         this.scen           = (MenuScene)this.scene;
-        this.btnMenus       = new int[5];
+        this.btnMenus       = new int[20];
     }
 
 	/**
@@ -32,14 +33,12 @@ public class MenuButton extends SceneButtonBase {
 	 */
     @Override
     public void doButton() {
-        this.btnMenus[0]        = this.registButton(this.scen.texGame, this.scen.texGameIndex[TexGame.TEX.menuFrame.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrameTouched.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrameDisabled.ordinal()], new ButtonMenuProcess());       // Menu1つ目のボタン
-        this.btnMenus[1]        = this.registButton(this.scen.texGame, this.scen.texGameIndex[TexGame.TEX.menuFrame.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrameTouched.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrameDisabled.ordinal()], new ButtonMenuProcess());       // Menu2つ目のボタン
-        this.btnMenus[2]        = this.registButton(this.scen.texGame, this.scen.texGameIndex[TexGame.TEX.menuFrame.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrameTouched.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrameDisabled.ordinal()], new ButtonMenuProcess());       // Menu3つ目のボタン
-        this.btnMenus[3]        = this.registButton(this.scen.texGame, this.scen.texGameIndex[TexGame.TEX.menuFrame.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrameTouched.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrameDisabled.ordinal()], new ButtonMenuProcess());       // Menu4つ目のボタン
-        this.btnMenus[4]        = this.registButton(this.scen.texGame, this.scen.texGameIndex[TexGame.TEX.menuFrame.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrameTouched.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrameDisabled.ordinal()], new ButtonMenuProcess());       // Menu5つ目のボタン
+		for (count = 0 ; count < this.btnMenus.length ; count++) {
+			this.btnMenus[count] = this.registButton(this.scen.texGame, this.scen.texGameIndex[TexGame.TEX.menuFrame.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrameTouched.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrameDisabled.ordinal()], new ButtonMenuProcess());
+		}
 
-        this.btnShop            = this.registButton(this.scen.texGame, this.scen.texGameIndex[TexGame.TEX.menuFrame.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrame.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrame.ordinal()], new ButtonShopProcess());       // ショップボタン
-        this.btnWebsite         = this.registButton(this.scen.texGame, this.scen.texGameIndex[TexGame.TEX.menuFrame.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrame.ordinal()], this.scen.texGameIndex[TexGame.TEX.menuFrame.ordinal()], new ButtonWebsiteProcess());	// WEBサイトへの誘導ボタン
+        this.btnShop            = this.registButton(this.scen.texGame, this.scen.texGameIndex[TexGame.TEX.buttonFrame.ordinal()], this.scen.texGameIndex[TexGame.TEX.buttonFrameTouched.ordinal()], this.scen.texGameIndex[TexGame.TEX.buttonFrameDisabled.ordinal()], new ButtonShopProcess());       // ショップボタン
+        this.btnWebsite         = this.registButton(this.scen.texGame, this.scen.texGameIndex[TexGame.TEX.buttonFrame.ordinal()], this.scen.texGameIndex[TexGame.TEX.buttonFrameTouched.ordinal()], this.scen.texGameIndex[TexGame.TEX.buttonFrameDisabled.ordinal()], new ButtonWebsiteProcess());	// WEBサイトへの誘導ボタン
     }
 
 	/**
@@ -47,19 +46,19 @@ public class MenuButton extends SceneButtonBase {
 	 */
     private class ButtonMenuProcess extends SceneButtonProcessBase {
 		@Override
-		public boolean onDown(){
-			Log.i("TOUCH!", "ButtonMenuProcess::onDown");
+		public boolean onDown(int buttonIndex){
+			Log.i("TOUCH!", "ButtonMenuProcess::onDown[" + buttonIndex + "]");
 			return true;
 		}
 		@Override
-		public boolean onUp(){
-			Log.i("TOUCH!", "ButtonMenuProcess::onUp");
+		public boolean onUp(int buttonIndex){
+			Log.i("TOUCH!", "ButtonMenuProcess::onUp[" + buttonIndex + "]");
 			return true;
 		}
 		@Override
-		public boolean onTouch() {
+		public boolean onTouch(int buttonIndex) {
 			// どのボタンが押下されたかを判断
-			Log.i("TOUCH!", "ButtonMenuProcess::onTouch");
+			Log.i("TOUCH!", "ButtonMenuProcess::onTouch[" + buttonIndex + "]");
 			return true;
 		}
 	}
@@ -69,18 +68,18 @@ public class MenuButton extends SceneButtonBase {
 	 */
 	private class ButtonShopProcess extends SceneButtonProcessBase {
 		@Override
-		public boolean onDown(){
-			Log.i("TOUCH!", "ButtonShopProcess::onDown");
+		public boolean onDown(int buttonIndex){
+			Log.i("TOUCH!", "ButtonShopProcess::onDown[" + buttonIndex + "]");
 			return true;
 		}
 		@Override
-		public boolean onUp(){
-			Log.i("TOUCH!", "ButtonShopProcess::onUp");
+		public boolean onUp(int buttonIndex){
+			Log.i("TOUCH!", "ButtonShopProcess::onUp[" + buttonIndex + "]");
 			return true;
 		}
 		@Override
-		public boolean onTouch(){
-			Log.i("TOUCH!", "ButtonShopProcess::onTouch");
+		public boolean onTouch(int buttonIndex){
+			Log.i("TOUCH!", "ButtonShopProcess::onTouch[" + buttonIndex + "]");
 			return true;
 		}
 	}
@@ -90,11 +89,11 @@ public class MenuButton extends SceneButtonBase {
 	 */
 	private class ButtonWebsiteProcess extends SceneButtonProcessBase {
 		@Override
-		public boolean onDown() { return true; }
+		public boolean onDown(int buttonIndex) { return true; }
 		@Override
-		public boolean onUp() { return true; }
+		public boolean onUp(int buttonIndex) { return true; }
 		@Override
-		public boolean onTouch() {
+		public boolean onTouch(int buttonIndex) {
 			return true;
 		}
 	}

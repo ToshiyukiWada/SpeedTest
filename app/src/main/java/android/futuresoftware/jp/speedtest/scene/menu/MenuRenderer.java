@@ -24,10 +24,16 @@ public class MenuRenderer extends SceneRendererBase {
 
     @Override
     public void draw(GL10 gl, float frametime) {
-        for (count = 0 ; count < btn.btnMenus.length ; count++) {
-            // this.drawTexture(gl, scen.texGame, scen.texGameIndex[TexGame.TEX.menuFrame.ordinal()], false, proc.menuScrollStartPos + (count * 190), this.sakuraManager.getVirtualHeight() / 2 - 450 / 2);
-			this.drawButton(gl, btn.btnMenus[count],false, proc.menuScrollStartPos + (count * 190), this.sakuraManager.getVirtualHeight() / 2 - 450 / 2);
-        }
+
+		// メニューボタンの描画
+		for (count = 0 ; count < btn.btnMenus.length ; count++) {
+			this.drawButton(gl, btn.btnMenus[count],false, proc.menuScrollStartPos + (count * 190), 5);
+			this.drawAlphaNum(gl, "STAGE" + (count+1<10?"0"+(count+1):(count+1)), proc.menuScrollStartPos + (count * 190) + 20, 55);
+		}
+
+		// ボタンの描画
+		this.drawButton(gl,btn.btnShop, false, 320, 425);
+		this.drawButton(gl,btn.btnWebsite, false, 640, 425);
     }
 
     @Override

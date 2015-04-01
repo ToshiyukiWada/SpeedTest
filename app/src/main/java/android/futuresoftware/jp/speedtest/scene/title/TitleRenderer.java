@@ -21,7 +21,6 @@ public class TitleRenderer extends SceneRendererBase {
 
     @Override
     public void draw(GL10 gl, float frametime) {
-
         // タイトル
         this.drawTexture(gl, scen.texIDHuman, 8, true, this.sakuraManager.getVirtualWidth() / 2, (int)(this.sakuraManager.getVirtualHeight() / 3.5f));
 
@@ -37,9 +36,6 @@ public class TitleRenderer extends SceneRendererBase {
 
         // ロゴの描画
         this.drawTexture(gl, scen.texIDFslogo, 0, true, this.sakuraManager.getVirtualWidth() / 2, (int)(this.sakuraManager.getVirtualHeight() / 1.07f), 210, 43);
-
-        // PUSH TOUCH START
-        this.drawAlphaNum(gl, "P", 100, 100);
     }
 
     @Override

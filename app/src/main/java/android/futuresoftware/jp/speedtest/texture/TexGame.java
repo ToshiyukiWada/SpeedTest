@@ -9,5 +9,8 @@ public class TexGame {
          menuFrame
 		,menuFrameTouched
 		,menuFrameDisabled
+		,buttonFrame
+		,buttonFrameTouched
+		,buttonFrameDisabled
     }
 }

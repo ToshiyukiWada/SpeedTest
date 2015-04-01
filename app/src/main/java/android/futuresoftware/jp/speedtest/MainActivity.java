@@ -51,9 +51,11 @@ public class MainActivity extends SakuraActivity
         this.init("UITest");
         this.sakuraManager.setVirtualWidth(960);								// 仮想画面サイズ設定
         this.sakuraManager.setVirtualHeight(540);								// 仮想画面サイズ設定
-        this.sakuraManager.setBackgroundColor(Color.parseColor("#FFFFFF"));		// 背景色指定
+        this.sakuraManager.setBackgroundColor(Color.parseColor("#ffffff"));		// 背景色指定
         this.sakuraManager.setTextTextureBufferSize(20);						// テキストテクスチャバッファーサイズの指定
-        this.sakuraManager.setDebug(true);										// デバッグモード
+        this.sakuraManager.setDebug(false);										// デバッグモード
+		this.sakuraManager.setFontColor(Color.parseColor("#000000"));
+		this.sakuraManager.setFont(getAssets(), "bigmisterc.ttf", 32);
 
         // AdMobの有効化
         this.sakuraManager.setAdMob("ca-app-pub-2487912231582475/9419668346", SAKURA.ADMOB_VERTICAL_POSITION.BOTTOM, 320, 50);

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <texture>
-    <char name="menuFrame"		        x="0"	y="0"	w="180"	h="450" />
-    <char name="menuFrameTouched"		x="180"	y="0"	w="180"	h="450" />
-    <char name="menuFrameDisabled"		x="360"	y="0"	w="180"	h="450" />
+    <char name="menuFrame"		        x="0"	y="0"	w="180"	h="400" />
+    <char name="menuFrameTouched"		x="180"	y="0"	w="180"	h="400" />
+    <char name="menuFrameDisabled"		x="360"	y="0"	w="180"	h="400" />
+    <char name="buttonFrame"            x="540" y="0"   w="300" h="70"  />
+    <char name="buttonFrameTouched"     x="540" y="70"  w="300" h="70"  />
+    <char name="buttonFrameDisabled"    x="540" y="140"  w="300" h="70"  />
 </texture>

@@ -39,9 +39,6 @@ public class MenuProcess extends SceneProcessBase {
 					if (this.touchStartPos.x != -1 && this.touchStartPos.y != -1) {
 						this.menuScrollStartPos -= this.touchStartPos.x - touchEvents.get(touchCount).x;
 						this.touchStartPos.set(touchEvents.get(touchCount).x, touchEvents.get(touchCount).y);
-						if (this.menuScrollStartPos < 0) {
-							this.menuScrollStartPos = 0;
-						}
 					}
 				} else if (touchEvents.get(touchCount).type == SakuraTouchManager.TouchEvent.TOUCH_UP) {
 					this.touchStartPos.set(-1, -1);

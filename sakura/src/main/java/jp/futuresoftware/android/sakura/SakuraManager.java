@@ -1,6 +1,7 @@
 package jp.futuresoftware.android.sakura;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -73,6 +74,10 @@ public class SakuraManager
     private float oppositeBackgroundColorRed;				// 背景色を反転したもの(R)
     private float oppositeBackgroundColorGreen;				// 背景色を反転したもの(G)
     private float oppositeBackgroundColorBlue;				// 背景色を反転したもの(B)
+	private int fontColor;									// 文字色
+	private float fontColorRed;								// 文字色
+	private float fontColorGreen;							// 文字色
+	private float fontColorBlue;							// 文字色
     private int frLayoutWidth;								// glレイアウトを含むフレームレイアウトの幅
     private int frLayoutHeight;								// glレイアウトを含むフレームレイアウトの高さ
     private int glLayoutWidth;								// glレイアウトの幅
@@ -96,6 +101,7 @@ public class SakuraManager
     // テクスチャ管理系
     private ArrayList<TextureManager> textures;				// 全てのテクスチャを管理する
     private SakuraTexture sakuraTexture;					// フレームワークが標準で用意するテクスチャ(英字・数字・平仮名の表示ならこれを使って出力が可能)
+	private AssetManager fontAssetsManager;
     private String sakuraTextureFont;						// 上記フレームワークが標準で用意するテクスチャに採用するフォントファイル名(assetsディレクトリに配置)
     private int sakuraTextureFontSize;						// 上記フレームワークが標準で用意するテクスチャに採用するフォントサイズ
     private int textTextureBufferSize;						// テキストテクスチャバッファサイズ
@@ -458,6 +464,20 @@ public class SakuraManager
     public float getOppositeBackgroundColorBlue() {
         return oppositeBackgroundColorBlue;
     }
+
+	public void setFontColor(int fontColor)
+	{
+		this.fontColor						= fontColor;
+		this.fontColorRed					= (float)((this.fontColor & 0x00ff0000) >> 16);
+		this.fontColorGreen					= (float)((this.fontColor & 0x0000ff00) >> 8);
+		this.fontColorBlue					= (float)((this.fontColor & 0x000000ff) >> 0);
+	}
+
+	public float getFontColorRed() { return this.fontColorRed; }
+
+	public float getFontColorGreen() { return this.fontColorGreen; }
+
+	public float getFontColorBlue() { return this.fontColorBlue; }
 
     public int getFrLayoutWidth() {
         return frLayoutWidth;
@@ -1045,11 +1065,17 @@ public class SakuraManager
      * @param font
      * @param fontSize
      */
-    public void setFont(String font, int fontSize)
+    public void setFont(AssetManager fontAssetsManager,String font, int fontSize)
     {
+		this.fontAssetsManager		= fontAssetsManager;
         this.sakuraTextureFont		= font;
         this.sakuraTextureFontSize	= fontSize;
     }
+
+	public AssetManager getFontAssetsManager()
+	{
+		return this.fontAssetsManager;
+	}
 
     /**
      * @return
@@ -1150,7 +1176,7 @@ public class SakuraManager
     //=========================================================================
     public int addButton(int textureID, int normalCharacterIndex, int touchCharacterIndex, int disableCharacterIndex, SceneButtonProcessBase sceneButtonProcessBase, int width, int height)
     {
-		this.nowTextureButtonInformations.add(new TextureButtonInformation(textureID, normalCharacterIndex, touchCharacterIndex, disableCharacterIndex, sceneButtonProcessBase, width, height));
+		this.nowTextureButtonInformations.add(new TextureButtonInformation(textureID, normalCharacterIndex, touchCharacterIndex, disableCharacterIndex, sceneButtonProcessBase, width, height, this.nowTextureButtonInformations.size()));
 		return this.nowTextureButtonInformations.size() - 1;
     }
 

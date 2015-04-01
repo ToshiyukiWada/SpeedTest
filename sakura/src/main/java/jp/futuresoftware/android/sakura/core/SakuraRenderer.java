@@ -1,14 +1,13 @@
 package jp.futuresoftware.android.sakura.core;
 
+import android.opengl.GLSurfaceView;
+import android.opengl.GLU;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import jp.futuresoftware.android.sakura.SAKURA.STATUS;
 import jp.futuresoftware.android.sakura.SakuraManager;
-
-import android.opengl.GLSurfaceView;
-import android.opengl.GLU;
-import android.util.Log;
 
 @SuppressWarnings("unused")
 public class SakuraRenderer implements GLSurfaceView.Renderer
@@ -23,7 +22,7 @@ public class SakuraRenderer implements GLSurfaceView.Renderer
 	private long nowMilliSecond;							// 現在のonDrawFrameのシステムミリ秒
 	private int fps;										// Frame/Second
 	private float frametime;								// FrameTime(FPSから求めた値、この値を1秒間全てで加算すると1になる値)
-	private String[] labels;				// FPS表示用ラベルの文字列を最初に定義しておく(動的に文字列を作成したくない為)
+	private String[] labels;								// FPS表示用ラベルの文字列を最初に定義しておく(動的に文字列を作成したくない為)
 	
 	private int count;										// 汎用カウンタ
 	
@@ -126,15 +125,17 @@ public class SakuraRenderer implements GLSurfaceView.Renderer
 			}
 			else
 			{
-				this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, "A", 0, 0, 100);
+				// Wait時の処理をここに記述する
+
+
 			}
 			
 			// FSPレンダリング
 			if (this.sakuraManager.isDebug())
 			{
-				//this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, this.labels[this.fps % 1000 / 100],0 ,0 ,100);
-				//this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, this.labels[this.fps % 100 / 10],30 ,0 ,100);
-				//this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, this.labels[this.fps % 10],60 ,0 ,100);
+				this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, this.labels[this.fps % 1000 / 100],0 ,0 ,100);
+				this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, this.labels[this.fps % 100 / 10],30 ,0 ,100);
+				this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, this.labels[this.fps % 10],60 ,0 ,100);
 			}
 		}
 		catch(Exception exp)

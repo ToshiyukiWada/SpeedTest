@@ -18,7 +18,7 @@ public class SakuraDraw
 {
 	// メンバ変数定義
 	private SakuraManager sakuraManager;			// SakuraManager
-	
+
 	// OpenGLで描画する為に必要な配列の定義
 	private float[] position;						// 描画位置を格納する為の配列
 	
@@ -27,7 +27,14 @@ public class SakuraDraw
 	
 	private ByteBuffer bb;							// 描画位置を指定する為の配列を格納するByteBuffer
 	private FloatBuffer fb;							// 描画位置を指定する為の配列を格納するFloatBuffer
-		
+
+	// 文字列描画で繰り返し利用する変数
+	private int count;
+	private int nowWidth;
+	private int nowCharacterIndex;
+	private char nowChar;
+
+
 	/**
 	 * @param sakuraManager
 	 */
@@ -197,7 +204,15 @@ public class SakuraDraw
 	 */
 	public void drawAlphaNum(GL10 gl, String text, int x, int y, int alpha)
 	{
-		drawTexture(gl, this.sakuraManager.getSakuraTexture().getTextureManager(), this.sakuraManager.getSakuraTexture().getTextureManager().getCharacterIndex(text), false, x, y, alpha, 32 ,32);
+		this.nowWidth			= 0;
+		this.nowCharacterIndex	= -1;
+		for (count = 0 ; count < text.length() ; count++) {
+			this.nowChar		= text.charAt(count);
+			     if ('A' <= this.nowChar && this.nowChar <= 'Z'){ nowCharacterIndex = this.nowChar - 'A' + this.sakuraManager.getSakuraTexture().alphaCharacterCodeIndex; }
+			else if ('0' <= this.nowChar && this.nowChar <= '9'){ nowCharacterIndex = this.nowChar - '0' + this.sakuraManager.getSakuraTexture().numberCharacterCodeIndex; }
+			drawTexture(gl, this.sakuraManager.getSakuraTexture().getTextureManager(), nowCharacterIndex, false, nowWidth + x, y, alpha, this.sakuraManager.getSakuraTexture().getTextureManager().getCharacter(nowCharacterIndex).getWidth(), this.sakuraManager.getSakuraTexture().getTextureManager().getCharacter(nowCharacterIndex).getHeight());
+			this.nowWidth += this.sakuraManager.getSakuraTexture().getTextureManager().getCharacter(nowCharacterIndex).getWidth();
+		}
 	}
 	
 	//=========================================================================
@@ -223,8 +238,8 @@ public class SakuraDraw
 	{
 		if (width == -1 ){ width 			= this.sakuraManager.getNowTextureButtonInformations().get(buttonIndex).getWidth();  }
 		if (height == -1){ height 			= this.sakuraManager.getNowTextureButtonInformations().get(buttonIndex).getHeight(); }
-		if (isCenter)	{ this.sakuraManager.getNowTextureButtonInformations().get(buttonIndex).setPosition(x - (width / 2), y - (height / 2), width, height); }		//　ボタンの座標情報を最新のものに更新する
-		else			{ this.sakuraManager.getNowTextureButtonInformations().get(buttonIndex).setPosition(x, y, width, height); }										// ボタンの座標情報を最新のものに更新する
+		if (isCenter)	{ this.sakuraManager.getNowTextureButtonInformations().get(buttonIndex).setButtonPosition(x - (width / 2), y - (height / 2), width, height); }		//　ボタンの座標情報を最新のものに更新する
+		else			{ this.sakuraManager.getNowTextureButtonInformations().get(buttonIndex).setButtonPosition(x, y, width, height); }										// ボタンの座標情報を最新のものに更新する
 		this.drawTexture(gl, this.sakuraManager.getTextureButtonInformation(buttonIndex).getTextureID(), this.sakuraManager.getNowTextureButtonInformations().get(buttonIndex).getNowCharacterIndex(), isCenter, x, y, alpha, width, height);		// ボタンの描画
 	}
 

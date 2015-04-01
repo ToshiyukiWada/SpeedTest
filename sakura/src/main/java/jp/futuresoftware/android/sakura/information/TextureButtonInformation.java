@@ -14,6 +14,8 @@ public class TextureButtonInformation implements Cloneable {
 	private int disableCharacterIndex;						// 無効時ボタンのテクスチャIndex
 	private SceneButtonProcessBase sceneButtonProcessBase;	// ボタンのイベントが記述されたメソッドを集めたクラス
 
+	private int buttonIndex;
+
 	// 状況フラグ
 	private int width;										// 現在ボタンがレンダリングされている座標(幅)
 	private int height;										// 現在ボタンがレンダリングされている座標(高さ)
@@ -23,10 +25,13 @@ public class TextureButtonInformation implements Cloneable {
 	private int x2;											// 現在ボタンがレンダリングされている座標(Xの終端)
 	private int y2;											// 現在ボタンがレンダリングされている座標(Yの終端)
 
+	private int nowX;										// 現在のタッチ座標(ドラッグ中を考慮)
+	private int nowY;										// 現在のタッチ座標(ドラッグ中を考慮)
+	private boolean isTouchAreaOut;
+
 	private int touchStartX;								// タッチ開始座標
 	private int touchStartY;								// タッチ開始座標
 
-	private int pointer;									// タッチ中のポインタ(マルチタッチ判定用)
 	private boolean isDisabled;								// そのボタンが無効中か否か
 
 	//=====================================================================
@@ -43,7 +48,7 @@ public class TextureButtonInformation implements Cloneable {
 	 * @param disableCharacterIndex
 	 * @param touchCharacterIndex
 	 */
-	public TextureButtonInformation(int textureID, int normalCharacterIndex, int touchCharacterIndex, int disableCharacterIndex, SceneButtonProcessBase sceneButtonProcessBase, int width, int height)
+	public TextureButtonInformation(int textureID, int normalCharacterIndex, int touchCharacterIndex, int disableCharacterIndex, SceneButtonProcessBase sceneButtonProcessBase, int width, int height, int buttonIndex)
 	{
 		// Indexの保持
 		this.textureID					= textureID;					// テクスチャID
@@ -51,6 +56,8 @@ public class TextureButtonInformation implements Cloneable {
 		this.touchCharacterIndex		= touchCharacterIndex;			// タッチ中ボタンのテクスチャIndex
 		this.disableCharacterIndex		= disableCharacterIndex;		// 無効時ボタンのテクスチャIndex
 		this.sceneButtonProcessBase		= sceneButtonProcessBase;		// ボタンのイベントが記述されたメソッドを集めたクラス
+
+		this.buttonIndex				= buttonIndex;
 
 		this.width						= width;						// XMLで定義済みのサイズ
 		this.height						= height;						// XMLで定義済みのサイズ
@@ -61,10 +68,13 @@ public class TextureButtonInformation implements Cloneable {
 		this.x2							= -1;							// ボタン終了座標X
 		this.y2							= -1;							// ボタン終了座標Y
 
+		this.nowX						= -1;
+		this.nowY						= -1;
+		this.isTouchAreaOut				= true;							//
+
 		this.touchStartX				= -1;
 		this.touchStartY				= -1;
 
-		this.pointer					= -1;
 		this.isDisabled					= false;
 	}
 
@@ -82,7 +92,7 @@ public class TextureButtonInformation implements Cloneable {
 	 * @param width
 	 * @param height
 	 */
-	public void setPosition(int x, int y, int width, int height)
+	public void setButtonPosition(int x, int y, int width, int height)
 	{
 		this.x		= x;
 		this.y		= y;
@@ -137,48 +147,98 @@ public class TextureButtonInformation implements Cloneable {
 	}
 
 	/**
+	 * 状況に適したボタン画像のキャラクターINDEXを返却する
+	 *
 	 * @return
 	 */
 	public int getNowCharacterIndex()
 	{
-		if (this.isDisabled == true){ return this.disableCharacterIndex; }
-		if (this.pointer != -1){ return this.touchCharacterIndex; }
-		return this.normalCharacterIndex;
+		if (this.isDisabled == true){ return this.disableCharacterIndex; }		// ボタンが無効化されている場合は、無効化ボタンイメージを返却
+		if (this.isTouchAreaOut == false){ return this.touchCharacterIndex; }	// タッチボタンイメージを返却
+		return this.normalCharacterIndex;										// 通常ボタンイメージを返却
 	}
 
-
-	public boolean onDown(int pointer, int x, int y)
+	/**
+	 *
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public boolean onDown(int x, int y)
 	{
-		this.pointer		= pointer;
-		this.touchStartX	= x;
-		this.touchStartY	= y;
-		return this.sceneButtonProcessBase.onDown();
+		this.nowX	= this.touchStartX	= x;
+		this.nowY	= this.touchStartY	= y;
+		this.isTouchAreaOut				= false;
+		return this.sceneButtonProcessBase.onDown(this.buttonIndex);
 	}
+
+	/**
+	 *
+	 * @param x
+	 * @param y
+	 */
+	public void setNow(int x, int y)
+	{
+		this.nowX		= x;
+		this.nowY		= y;
+
+		if (this.isTouchAreaOut == false)
+		{
+			if (this.touchStartX - 20 < this.nowX && this.nowX <= this.touchStartX + 20 && this.touchStartY - 20 < this.nowY && this.nowY <= this.touchStartY + 20)	{
+				// タッチ判定有効エリア内
+			} else {
+				// タッチ判定有効エリア外に出てしまった
+				this.isTouchAreaOut = true;
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public boolean isTouchAreaOut()
+	{
+		return this.isTouchAreaOut;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
 	public boolean onUp()
 	{
 		// 開始位置
-		this.pointer		= -1;
+		this.isTouchAreaOut = true;
 		this.touchStartX	= -1;
 		this.touchStartY	= -1;
-		return this.sceneButtonProcessBase.onUp();
+		return this.sceneButtonProcessBase.onUp(this.buttonIndex);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean onTouch()
 	{
-		this.pointer		= -1;
+		this.isTouchAreaOut = true;
 		this.touchStartX	= -1;
 		this.touchStartY	= -1;
-		return this.sceneButtonProcessBase.onTouch();
+		return this.sceneButtonProcessBase.onTouch(this.buttonIndex);
 	}
 
-	public int getPointer(){
-		return this.pointer;
-	}
-
+	/**
+	 *
+	 * @return
+	 */
 	public int getTouchStartX() {
 		return this.touchStartX;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getTouchStartY()	{
 		return this.touchStartY;
 	}

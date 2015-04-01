@@ -74,22 +74,31 @@ public class SakuraProcess extends Thread
 							// ボタン情報の取得
 							TextureButtonInformation textureButtonInformation = this.sakuraManager.getNowTextureButtonInformations().get(countButtons);
 
-							// タッチイベントの座標の対象か否かを先に取得しておく
-							if (textureButtonInformation.getX() <= touchEvent.x && touchEvent.x <= textureButtonInformation.getX2() && textureButtonInformation.getY() <= touchEvent.y && touchEvent.y <= textureButtonInformation.getY2() && touchEvent.type == TouchEvent.TOUCH_DOWN){
-								this.textureButtonMapping[touchEvent.pointer] = countButtons;
-								if (textureButtonInformation.onDown(touchEvent.pointer, touchEvent.x, touchEvent.y) == false){ touchEvents.remove(countTouch); countTouch--; }
-							}
-							else if (touchEvent.type == TouchEvent.TOUCH_UP)
+							//-------------------------------------------------
+							// タッチイベントの判定
+							//-------------------------------------------------
+							// タッチ状態の判定
+							if (textureButtonInformation.getX() <= touchEvent.x && touchEvent.x <= textureButtonInformation.getX2() && textureButtonInformation.getY() <= touchEvent.y && touchEvent.y <= textureButtonInformation.getY2() && touchEvent.type == TouchEvent.TOUCH_DOWN)
 							{
-								if (touchEvent.x - 5 <= this.sakuraManager.getNowTextureButtonInformations().get(this.textureButtonMapping[countButtons]).getTouchStartX()
-								 && touchEvent.x + 5 >= this.sakuraManager.getNowTextureButtonInformations().get(this.textureButtonMapping[countButtons]).getTouchStartX()
-								 && touchEvent.y - 5 <=	this.sakuraManager.getNowTextureButtonInformations().get(this.textureButtonMapping[countButtons]).getTouchStartY()
-								 && touchEvent.y + 5 >=	this.sakuraManager.getNowTextureButtonInformations().get(this.textureButtonMapping[countButtons]).getTouchStartY())	{
-									if (this.sakuraManager.getNowTextureButtonInformations().get(this.textureButtonMapping[countButtons]).onTouch() == false){ touchEvents.remove(countTouch); countTouch--; }
+								// Down(指を画面に触れる)
+								this.textureButtonMapping[touchEvent.pointer] = countButtons;																// 指番号配列に対象ボタンNoを保存
+								if (textureButtonInformation.onDown(touchEvent.x, touchEvent.y) == false){ touchEvents.remove(countTouch); countTouch--; }	// 同時にDownイベントをキックする(Downイベントの戻り値がfalseの場合はProcessへの伝達を行わない)
+							}
+							else if (touchEvent.type == TouchEvent.TOUCH_UP && this.textureButtonMapping[touchEvent.pointer] == countButtons)
+							{
+								// Up(指を画面から離す)
+								textureButtonInformation.setNow(touchEvent.x, touchEvent.y);																// 現在座標を再設定
+								if (!textureButtonInformation.isTouchAreaOut()){																			// タッチ有効範囲内で指を離されたか否か
+									if (textureButtonInformation.onTouch() == false){ touchEvents.remove(countTouch); countTouch--; }						// 有効範囲内で指を離した場合はTouchイベントを発生させる(Touchイベントの戻り値がfalseの場合はProcessへの伝達を行わない)
 								} else {
-									if (this.sakuraManager.getNowTextureButtonInformations().get(this.textureButtonMapping[countButtons]).onUp() == false){ touchEvents.remove(countTouch); countTouch--; }
+									if (textureButtonInformation.onUp() == false){ touchEvents.remove(countTouch); countTouch--; }							// 有効範囲外で指を離した場合はUpイベントを発生させる(Upイベントの戻り値がfalseの場合はProcessへの伝達を行わない)
 								}
-								this.textureButtonMapping[countButtons]		= -1;
+								this.textureButtonMapping[touchEvent.pointer]		= -1;																	// ボタンをタッチしていた指番号のボタン情報をクリア
+							}
+							else if(touchEvent.type == TouchEvent.TOUCH_DRAGGED && this.textureButtonMapping[touchEvent.pointer] == countButtons)
+							{
+								// Dragged(タッチしたまま指をなぞる)
+								textureButtonInformation.setNow(touchEvent.x, touchEvent.y);																// 現在座標を再設定
 							}
 						}
 					}

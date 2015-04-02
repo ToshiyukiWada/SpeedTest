@@ -16,9 +16,10 @@ import android.futuresoftware.jp.speedtest.scene.shop.ShopScene;
 import android.futuresoftware.jp.speedtest.scene.splash.SplashProcess;
 import android.futuresoftware.jp.speedtest.scene.splash.SplashRenderer;
 import android.futuresoftware.jp.speedtest.scene.splash.SplashScene;
-import android.futuresoftware.jp.speedtest.scene.test.TestProcess;
-import android.futuresoftware.jp.speedtest.scene.test.TestRenderer;
-import android.futuresoftware.jp.speedtest.scene.test.TestScene;
+import android.futuresoftware.jp.speedtest.scene.stage.StageButton;
+import android.futuresoftware.jp.speedtest.scene.stage.StageProcess;
+import android.futuresoftware.jp.speedtest.scene.stage.StageRenderer;
+import android.futuresoftware.jp.speedtest.scene.stage.StageScene;
 import android.futuresoftware.jp.speedtest.scene.title.TitleProcess;
 import android.futuresoftware.jp.speedtest.scene.title.TitleRenderer;
 import android.futuresoftware.jp.speedtest.scene.title.TitleScene;
@@ -38,38 +39,47 @@ public class MainActivity extends SakuraActivity
 {
     public void onCreate(Bundle savedInstanceState)
     {
+		//---------------------------------------------------------------------
         // 基底クラスコール
+		//---------------------------------------------------------------------
         super.onCreate(savedInstanceState);
 
+		//---------------------------------------------------------------------
         // 初期設定
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);		// フルスクリーンでの呼び出し
-        requestWindowFeature(Window.FEATURE_NO_TITLE);							// タイトルの非表示
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);	// 省電力モードOFF
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);                      // ボリュームはボリュームボタンを有効にする
+		//---------------------------------------------------------------------
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);						// フルスクリーンでの呼び出し
+        requestWindowFeature(Window.FEATURE_NO_TITLE);											// タイトルの非表示
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);					// 省電力モードOFF
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);                      				// ボリュームはボリュームボタンを有効にする
 
+		//---------------------------------------------------------------------
         // アプリケーション定義
-        this.init("UITest");
-        this.sakuraManager.setVirtualWidth(960);								// 仮想画面サイズ設定
-        this.sakuraManager.setVirtualHeight(540);								// 仮想画面サイズ設定
-        this.sakuraManager.setBackgroundColor(Color.parseColor("#ffffff"));		// 背景色指定
-        this.sakuraManager.setTextTextureBufferSize(20);						// テキストテクスチャバッファーサイズの指定
-        this.sakuraManager.setDebug(false);										// デバッグモード
-		this.sakuraManager.setFontColor(Color.parseColor("#000000"));
-		this.sakuraManager.setFont(getAssets(), "bigmisterc.ttf", 32);
+		//---------------------------------------------------------------------
+        this.init("UITest");																	// アプリケーション初期化
+        this.sakuraManager.setVirtualWidth(960);												// 仮想画面サイズ設定
+        this.sakuraManager.setVirtualHeight(540);												// 仮想画面サイズ設定
+        this.sakuraManager.setBackgroundColor(Color.parseColor("#ffffff"));						// 背景色指定
+        this.sakuraManager.setTextTextureBufferSize(20);										// テキストテクスチャバッファーサイズの指定
+        this.sakuraManager.setDebug(false);														// デバッグモード
+		this.sakuraManager.setFont("Boxy-Bold.ttf", Color.parseColor("#000000"));					// フォント関連の設定
 
+		//---------------------------------------------------------------------
         // AdMobの有効化
+		//---------------------------------------------------------------------
         this.sakuraManager.setAdMob("ca-app-pub-2487912231582475/9419668346", SAKURA.ADMOB_VERTICAL_POSITION.BOTTOM, 320, 50);
 
+		//---------------------------------------------------------------------
         // シーン追加・定義
+		//---------------------------------------------------------------------
         this.sakuraManager.addScene(new SplashScene ("SPLASH"   ,  new SplashRenderer()     , new SplashProcess()   , null));
         this.sakuraManager.addScene(new TitleScene  ("TITLE"    ,  new TitleRenderer()      , new TitleProcess()    , null));
         this.sakuraManager.addScene(new MenuScene   ("MENU"     ,  new MenuRenderer()       , new MenuProcess()     , new MenuButton()));
-        this.sakuraManager.addScene(new GameScene   ("GAME"     ,  new GameRenderer()       , new GameProcess()     , null));
+		this.sakuraManager.addScene(new StageScene  ("STAGE"    ,  new StageRenderer()      , new StageProcess()    , new StageButton()));
+		this.sakuraManager.addScene(new GameScene   ("GAME"     ,  new GameRenderer()       , new GameProcess()     , null));
         this.sakuraManager.addScene(new ScoreScene  ("SCORE"    ,  new ScoreRenderer()      , new ScoreProcess()    , null));
         this.sakuraManager.addScene(new ShopScene   ("SHOP"     ,  new ShopRenderer()       , new ShopProcess()     , null));
-        this.sakuraManager.addScene(new TestScene   ("TEST"     ,  new TestRenderer()       , new TestProcess()     , null));
 
-        //---------------------------------------------------------------------
+		//---------------------------------------------------------------------
         // 描画開始
         //---------------------------------------------------------------------
         setContentView(getContentView());

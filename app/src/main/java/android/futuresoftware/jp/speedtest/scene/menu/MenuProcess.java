@@ -17,7 +17,7 @@ public class MenuProcess extends SceneProcessBase {
 
     @Override
     public void back() {
-        this.sakuraManager.finish();
+        this.sakuraManager.changeScene("TITLE");
     }
 
     @Override
@@ -29,6 +29,9 @@ public class MenuProcess extends SceneProcessBase {
     @Override
     public void process(float frametime, List<SakuraTouchManager.TouchEvent> touchEvents) {
 
+		//---------------------------------------------------------------------
+		// タッチ処理解析
+		//---------------------------------------------------------------------
         for (touchCount = 0 ; touchCount < touchEvents.size() ; touchCount++){
 
             // メニュー横スクロール処理
@@ -45,6 +48,8 @@ public class MenuProcess extends SceneProcessBase {
 				}
 			}
         }
+
+
     }
 
     @Override

@@ -1,11 +1,14 @@
 package jp.futuresoftware.android.sakura;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -99,34 +102,35 @@ public class SakuraManager
     private ArrayList<TextureButtonInformation> nowTextureButtonInformations;	// このシーンで適用されているボタン(このシーンで読み込まれているTextureManagerに属するボタン定義をまとめたもの)
 
     // テクスチャ管理系
-    private ArrayList<TextureManager> textures;				// 全てのテクスチャを管理する
-    private SakuraTexture sakuraTexture;					// フレームワークが標準で用意するテクスチャ(英字・数字・平仮名の表示ならこれを使って出力が可能)
-	private AssetManager fontAssetsManager;
-    private String sakuraTextureFont;						// 上記フレームワークが標準で用意するテクスチャに採用するフォントファイル名(assetsディレクトリに配置)
-    private int sakuraTextureFontSize;						// 上記フレームワークが標準で用意するテクスチャに採用するフォントサイズ
-    private int textTextureBufferSize;						// テキストテクスチャバッファサイズ
-    private int[] alphaVboIDs;								// アルファ値(0～100までのVBOのID(OpenGLが発行)を保持する配列)
+    private ArrayList<TextureManager> textures;						// 全てのテクスチャを管理する
+    private SakuraTexture sakuraTexture;							// フレームワークが標準で用意するテクスチャ(英字・数字・平仮名の表示ならこれを使って出力が可能)
+    private String sakuraTextureFont;								// 上記フレームワークが標準で用意するテクスチャに採用するフォントファイル名(assetsディレクトリに配置)
+    private int textTextureBufferSize;								// テキストテクスチャバッファサイズ
+    private int[] alphaVboIDs;										// アルファ値(0～100までのVBOのID(OpenGLが発行)を保持する配列)
 
     //　SoundPool(SE)
-    private int maxStreams;									// SEの最大同時再生数
-    private HashMap<String, Integer> sounds;				// サウンド名とIDを紐付ける
-    private SoundPool soundPool;							// サウンド(SE)
+    private int maxStreams;											// SEの最大同時再生数
+    private HashMap<String, Integer> sounds;						// サウンド名とIDを紐付ける
+    private SoundPool soundPool;									// サウンド(SE)
 
     // 待ち画面
-    private boolean isUseWait;								// 待ち画面を表示するか否か
-    private SceneBase waitScene;							// 待ち画面が定義されたシーン(initへ記述した場合でもスレッド処理は実施されない特別なシーンとなる)
-    private boolean isWaitSceneInitComplete;				// 待ち画面が外部定義されている場合に、そのinit処理を通過したか否か
-    private boolean isWaitView;								// 待ち画面を表示するか否か
+    private boolean isUseWait;										// 待ち画面を表示するか否か
+    private SceneBase waitScene;									// 待ち画面が定義されたシーン(initへ記述した場合でもスレッド処理は実施されない特別なシーンとなる)
+    private boolean isWaitSceneInitComplete;						// 待ち画面が外部定義されている場合に、そのinit処理を通過したか否か
+    private boolean isWaitView;										// 待ち画面を表示するか否か
 
     // AdMob
-    private boolean isUseAdMob;								// AdMobを利用するか否か
-    private String adUnitID;								// AdMobのUNIT_ID
+    private boolean isUseAdMob;										// AdMobを利用するか否か
+    private String adUnitID;										// AdMobのUNIT_ID
     private SAKURA.ADMOB_VERTICAL_POSITION adMobVerticalPosition;	// AdMobを表示する位置
-    private int adMobWidthDp;								// AdMobの幅
-    private int adMobHeightDp;								// AdMobの高さ
+    private int adMobWidthDp;										// AdMobの幅
+    private int adMobHeightDp;										// AdMobの高さ
 
     // Bluetooth
     private BluetoothManager bluetoothManager;
+
+	// アプリケーション変数保存領域
+	private HashMap<String ,Object> variables;
 
     //=========================================================================
     //
@@ -161,7 +165,6 @@ public class SakuraManager
 
         this.textures					= new ArrayList<TextureManager>();
         this.sakuraTextureFont			= "";
-        this.sakuraTextureFontSize		= 1;
         this.textTextureBufferSize		= -1;
         this.alphaVboIDs				= new int[101];
 
@@ -180,6 +183,9 @@ public class SakuraManager
         Configuration configuration     = sakuraActivity.getResources().getConfiguration();
         if(configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)        { this.isPortrait   = false;  }
         else if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT)   { this.isPortrait   = true; }
+
+		this.variables					= new HashMap<String, Object>();
+		this.loadVariable();
     }
 
     /**
@@ -465,13 +471,6 @@ public class SakuraManager
         return oppositeBackgroundColorBlue;
     }
 
-	public void setFontColor(int fontColor)
-	{
-		this.fontColor						= fontColor;
-		this.fontColorRed					= (float)((this.fontColor & 0x00ff0000) >> 16);
-		this.fontColorGreen					= (float)((this.fontColor & 0x0000ff00) >> 8);
-		this.fontColorBlue					= (float)((this.fontColor & 0x000000ff) >> 0);
-	}
 
 	public float getFontColorRed() { return this.fontColorRed; }
 
@@ -1061,21 +1060,20 @@ public class SakuraManager
     // フォント
     //
     //=========================================================================
-    /**
-     * @param font
-     * @param fontSize
-     */
-    public void setFont(AssetManager fontAssetsManager,String font, int fontSize)
-    {
-		this.fontAssetsManager		= fontAssetsManager;
-        this.sakuraTextureFont		= font;
-        this.sakuraTextureFontSize	= fontSize;
-    }
 
-	public AssetManager getFontAssetsManager()
-	{
-		return this.fontAssetsManager;
-	}
+	/**
+	 *
+	 * @param font
+	 * @param fontColor
+	 */
+    public void setFont(String font, int fontColor)
+    {
+        this.sakuraTextureFont		= font;
+		this.fontColor				= fontColor;
+		this.fontColorRed			= (float)((this.fontColor & 0x00ff0000) >> 16);
+		this.fontColorGreen			= (float)((this.fontColor & 0x0000ff00) >> 8);
+		this.fontColorBlue			= (float)((this.fontColor & 0x000000ff) >> 0);
+    }
 
     /**
      * @return
@@ -1083,14 +1081,6 @@ public class SakuraManager
     public String getSakuraTextureFont() {
         return sakuraTextureFont;
     }
-
-    /**
-     * @return
-     */
-    public int getSakuraTextureFontSize() {
-        return sakuraTextureFontSize;
-    }
-
 
     /**
      * @return
@@ -1191,4 +1181,100 @@ public class SakuraManager
     public ArrayList<TextureButtonInformation> getNowTextureButtonInformations() {
         return this.nowTextureButtonInformations;
     }
+
+	//=========================================================================
+	//
+	// Variables
+	// このシーンに対して利用するボタン情報を追加し、その追加インデックスを返却する
+	//
+	//=========================================================================
+
+	/**
+	 *
+	 * @param name
+	 * @param value
+	 * @param synchroSave
+	 */
+	public void setVariable(String name, Object value, boolean synchroSave)
+	{
+		this.variables.put(name, value);
+		if (synchroSave == true){
+			this.saveVariable();
+		}
+	}
+
+	/**
+	 *
+	 * @param name
+	 * @return
+	 */
+	public Object getVariable(String name)
+	{
+		return this.getVariable(name, null);
+	}
+
+	/**
+	 *
+	 * @param name
+	 * @return
+	 */
+	public Object getVariable(String name, Object defaultValue)
+	{
+		if (this.variables.containsKey(name)){ return this.variables.get(name); }
+		return defaultValue;
+	}
+
+	/**
+	 *
+	 * @param name
+	 */
+	public void removeVariable(String name)
+	{
+		this.variables.remove(name);
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public boolean saveVariable() {
+		boolean result						= true;
+		FileOutputStream fileOutputStream	= null;
+		try {
+			fileOutputStream						= this.sakuraActivity.openFileOutput(SAKURA.VARIABLE_DAT_FILENAME, this.sakuraActivity.MODE_PRIVATE);
+			ObjectOutputStream objectOutputStream	= new ObjectOutputStream(fileOutputStream);
+			objectOutputStream.writeObject(this.variables);
+			objectOutputStream.close();
+		} catch(Exception exp){
+			result			= false;
+		}
+
+		if (fileOutputStream != null){
+			try { fileOutputStream.close(); } catch (Exception exp){}
+		}
+		return result;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public boolean loadVariable() {
+		boolean result					= true;
+		FileInputStream fileInputStream	= null;
+
+		try {
+			fileInputStream							= this.sakuraActivity.openFileInput(SAKURA.VARIABLE_DAT_FILENAME);
+			ObjectInputStream objectInputStream 	= new ObjectInputStream(fileInputStream);
+			this.variables							= (HashMap<String, Object>) objectInputStream.readObject();
+			objectInputStream.close();
+		} catch (Exception e) {
+			result			= false;
+		}
+
+		if (fileInputStream != null){
+			try { fileInputStream.close(); } catch (Exception exp){}
+		}
+		return result;
+	}
 }

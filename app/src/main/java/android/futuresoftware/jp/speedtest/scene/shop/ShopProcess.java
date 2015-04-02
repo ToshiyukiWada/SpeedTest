@@ -11,7 +11,7 @@ import jp.futuresoftware.android.sakura.core.SakuraTouchManager;
 public class ShopProcess extends SceneProcessBase {
     @Override
     public void back() {
-
+		this.sakuraManager.changeScene("MENU");
     }
 
     @Override

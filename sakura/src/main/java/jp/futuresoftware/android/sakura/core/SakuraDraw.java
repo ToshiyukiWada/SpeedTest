@@ -202,16 +202,38 @@ public class SakuraDraw
 	 * @param x
 	 * @param y
 	 */
-	public void drawAlphaNum(GL10 gl, String text, int x, int y, int alpha)
+	public void drawAlphaNum(GL10 gl, String text, int fontSize, int margin, int x, int y, int alpha)
 	{
-		this.nowWidth			= 0;
-		this.nowCharacterIndex	= -1;
+		// メンバ変数初期化
+		this.nowWidth			= 0;								// 文字列を横方向に描画していく為の起点管理
+		this.nowCharacterIndex	= -1;								// 出力する文字(１文字ずつ)の文字コード(半角英字(大文字)・数字のみを想定)
+
+		// 文字を１文字ずつ切離しながら描画していく
 		for (count = 0 ; count < text.length() ; count++) {
+
+			// 現在の対象文字の文字コードを取得
 			this.nowChar		= text.charAt(count);
-			     if ('A' <= this.nowChar && this.nowChar <= 'Z'){ nowCharacterIndex = this.nowChar - 'A' + this.sakuraManager.getSakuraTexture().alphaCharacterCodeIndex; }
-			else if ('0' <= this.nowChar && this.nowChar <= '9'){ nowCharacterIndex = this.nowChar - '0' + this.sakuraManager.getSakuraTexture().numberCharacterCodeIndex; }
-			drawTexture(gl, this.sakuraManager.getSakuraTexture().getTextureManager(), nowCharacterIndex, false, nowWidth + x, y, alpha, this.sakuraManager.getSakuraTexture().getTextureManager().getCharacter(nowCharacterIndex).getWidth(), this.sakuraManager.getSakuraTexture().getTextureManager().getCharacter(nowCharacterIndex).getHeight());
-			this.nowWidth += this.sakuraManager.getSakuraTexture().getTextureManager().getCharacter(nowCharacterIndex).getWidth();
+
+			// 文字コードからCharacterIndexを取得
+			this.nowCharacterIndex		= -1;																																		// 一旦文字コード情報をクリア
+			     if ('A' <= this.nowChar && this.nowChar <= 'Z'){ nowCharacterIndex = this.nowChar - 'A' + this.sakuraManager.getSakuraTexture().alphaCharacterCodeIndex; }			// 英字の場合
+			else if ('0' <= this.nowChar && this.nowChar <= '9'){ nowCharacterIndex = this.nowChar - '0' + this.sakuraManager.getSakuraTexture().numberCharacterCodeIndex; }		// 数字の場合
+
+			// 文字コード情報が正常に取得できた場合は、その文字テクスチャを描画する
+			if (this.nowCharacterIndex != -1) {
+				// 文字テクスチャの描画
+				drawTexture( gl																													// GL10
+							,this.sakuraManager.getSakuraTexture().getTextureManager()															// フォント用テクスチャーマネージャー
+							,nowCharacterIndex																									// 対象文字のCharacterIndex
+							,false																												// 左上座標系描画
+							,nowWidth + x																										// 描画開始座標
+							,y																													// 描画開始座標
+							,alpha																												// 透過
+							,(int)(this.sakuraManager.getSakuraTexture().getTextureManager().getCharacter(nowCharacterIndex).getWidth()  *	this.sakuraManager.getSakuraTexture().getFontSizeScale(fontSize))		// 幅
+							,(int)(this.sakuraManager.getSakuraTexture().getTextureManager().getCharacter(nowCharacterIndex).getHeight() *  this.sakuraManager.getSakuraTexture().getFontSizeScale(fontSize))		// 高さ
+				);
+				this.nowWidth += (int)(this.sakuraManager.getSakuraTexture().getTextureManager().getCharacter(nowCharacterIndex).getWidth() *  this.sakuraManager.getSakuraTexture().getFontSizeScale(fontSize)) + margin;	// 横方向への加算
+			}
 		}
 	}
 	

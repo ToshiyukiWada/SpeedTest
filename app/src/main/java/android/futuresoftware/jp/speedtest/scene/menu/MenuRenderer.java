@@ -28,12 +28,15 @@ public class MenuRenderer extends SceneRendererBase {
 		// メニューボタンの描画
 		for (count = 0 ; count < btn.btnMenus.length ; count++) {
 			this.drawButton(gl, btn.btnMenus[count],false, proc.menuScrollStartPos + (count * 190), 5);
-			this.drawAlphaNum(gl, "STAGE" + (count+1<10?"0"+(count+1):(count+1)), proc.menuScrollStartPos + (count * 190) + 20, 55);
+			this.drawAlphaNum(gl, "AREA" + (count+1<10?"0"+(count+1):(count+1)), 25, 1, proc.menuScrollStartPos + (count * 190) + 26, 60);
 		}
 
 		// ボタンの描画
 		this.drawButton(gl,btn.btnShop, false, 320, 425);
+		this.drawAlphaNum(gl, "SHOP", 40, 2, 405, 440);
+
 		this.drawButton(gl,btn.btnWebsite, false, 640, 425);
+		this.drawAlphaNum(gl, "WEBSITE", 40, 2, 665, 440);
     }
 
     @Override

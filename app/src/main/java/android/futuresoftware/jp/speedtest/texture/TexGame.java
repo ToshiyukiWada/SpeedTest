@@ -12,5 +12,11 @@ public class TexGame {
 		,buttonFrame
 		,buttonFrameTouched
 		,buttonFrameDisabled
+		,stageButtonFrame
+		,stageButtonFrameTouched
+		,stageButtonFrameDisabled
+
+		,operationBackground
+		,operationBack
     }
 }

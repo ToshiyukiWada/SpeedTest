@@ -15,7 +15,7 @@ public class ShopRenderer extends SceneRendererBase {
 
     @Override
     public void draw(GL10 gl, float frametime) {
-
+		this.drawAlphaNum(gl, "SHOP", 64, 2, 0, 0);
     }
 
     @Override

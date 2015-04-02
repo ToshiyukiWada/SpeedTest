@@ -44,7 +44,6 @@ public class MenuScene extends SceneBase {
 	 */
     @Override
     public void initCallback() {
-
         this.texGame  = this.sakuraManager.getTextureID(R.drawable.game, R.raw.game);
         TextureManager.characterName2Index(this,this.texGame,"texGameIndex", EnumSet.allOf(TexGame.TEX.class));
     }

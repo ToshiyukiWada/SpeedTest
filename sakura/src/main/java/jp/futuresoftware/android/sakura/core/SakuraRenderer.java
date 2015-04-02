@@ -133,9 +133,9 @@ public class SakuraRenderer implements GLSurfaceView.Renderer
 			// FSPレンダリング
 			if (this.sakuraManager.isDebug())
 			{
-				this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, this.labels[this.fps % 1000 / 100],0 ,0 ,100);
-				this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, this.labels[this.fps % 100 / 10],30 ,0 ,100);
-				this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, this.labels[this.fps % 10],60 ,0 ,100);
+				this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, this.labels[this.fps % 1000 / 100], 20, 0, 0 ,0 ,100);
+				this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, this.labels[this.fps % 100 / 10], 20, 0, 30 ,0 ,100);
+				this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, this.labels[this.fps % 10], 20, 0, 60 ,0 ,100);
 			}
 		}
 		catch(Exception exp)

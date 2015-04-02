@@ -28,14 +28,14 @@ public abstract class SceneRendererBase extends SakuraBase
 	// drawAlphaNum系
 	//
 	//=========================================================================
-	protected void drawAlphaNum(GL10 gl, String text, int x, int y)
+	protected void drawAlphaNum(GL10 gl, String text, int fontSize, int margin, int x, int y)
 	{
-		this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, text, x, y, 100);
+		this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, text, fontSize, margin, x, y, 100);
 	}
 
-	protected void drawAlphaNum(GL10 gl, String text, int x, int y, int alpha)
+	protected void drawAlphaNum(GL10 gl, String text, int fontSize, int margin, int x, int y, int alpha)
 	{
-		this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, text, x, y, alpha);
+		this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, text, fontSize, margin, x, y, alpha);
 	}
 
 	//=========================================================================

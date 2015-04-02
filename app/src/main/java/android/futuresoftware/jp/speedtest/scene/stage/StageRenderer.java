@@ -1,5 +1,7 @@
 package android.futuresoftware.jp.speedtest.scene.stage;
 
+import android.futuresoftware.jp.speedtest.texture.TexGame;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import jp.futuresoftware.android.sakura.base.SceneRendererBase;
@@ -28,6 +30,8 @@ public class StageRenderer extends SceneRendererBase {
 			this.drawAlphaNum(gl, "STAGE" + (count+1<10?"0"+(count+1):(count+1)), 15, 3, 134 * (count % 7) + 13, 130 * (count / 7) + 14 + 15);
 			this.drawAlphaNum(gl, "623456", 15, 1, 134 * (count % 7) + 9, 130 * (count / 7) + 14 + 103);
 		}
+
+		this.drawTexture(gl, scen.texGame, scen.texGameIndex[TexGame.TEX.operationBack.ordinal()], false, 10, this.sakuraManager.getVirtualHeight() - 80 - 15, 80, 80);
 	}
 
 	@Override

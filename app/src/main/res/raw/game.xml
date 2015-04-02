@@ -9,7 +9,5 @@
     <char name="stageButtonFrame"           x="540" y="210" w="128" h="128" />
     <char name="stageButtonFrameTouched"    x="668" y="210" w="128" h="128" />
     <char name="stageButtonFrameDisabled"   x="796" y="210" w="128" h="128" />
-
-    <char name="operationBackground"        x="840" y="0"   w="20"  h="20" />
-    <char name="operationBack"              x="860" y="0"   w="100" h="100" />
+    <char name="operationBack"              x="840" y="0"   w="110" h="110" />
 </texture>

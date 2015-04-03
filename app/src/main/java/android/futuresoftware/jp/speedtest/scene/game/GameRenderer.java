@@ -36,6 +36,8 @@ public class GameRenderer extends SceneRendererBase {
 		}
 		this.burstTextureRenderer(gl, scen.texGame);
 
+		// タイムの表示
+
 		// エリアの表示
 		this.drawAlphaNum(gl, "AREA" + (this.scen.selectedArea+1<10?"0"+(this.scen.selectedArea+1):(this.scen.selectedArea+1)), 32, 3, 375, this.sakuraManager.getVirtualHeight() - 80 - 15 + 10);
 		this.drawAlphaNum(gl, "STAGE" + (this.scen.selectedStage+1<10?"0"+(this.scen.selectedStage+1):(this.scen.selectedStage+1)), 32, 3, 358, this.sakuraManager.getVirtualHeight() - 80 - 15 + 50);

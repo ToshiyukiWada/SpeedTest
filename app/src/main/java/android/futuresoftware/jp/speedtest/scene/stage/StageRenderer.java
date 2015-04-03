@@ -11,6 +11,7 @@ import jp.futuresoftware.android.sakura.base.SceneRendererBase;
  */
 public class StageRenderer extends SceneRendererBase {
 
+	// メンバ変数定義
 	private StageScene scen;
 	private StageProcess proc;
 	private StageButton btn;
@@ -25,13 +26,20 @@ public class StageRenderer extends SceneRendererBase {
 
 	@Override
 	public void draw(GL10 gl, float frametime) {
+
+		// 面選択ボタンの描画
 		for (count = 0 ; count < this.btn.btnStages.length ; count++ ){
-			this.drawButton(gl, this.btn.btnStages[count], false, 134 * (count % 7), 130 * (count / 7) + 14);
-			this.drawAlphaNum(gl, "STAGE" + (count+1<10?"0"+(count+1):(count+1)), 15, 3, 134 * (count % 7) + 13, 130 * (count / 7) + 14 + 15);
-			this.drawAlphaNum(gl, "623456", 15, 1, 134 * (count % 7) + 9, 130 * (count / 7) + 14 + 103);
+			this.drawButton(gl, this.btn.btnStages[count], false, 134 * (count % 7), 130 * (count / 7) + 14);																					// 面選択ボタンの表示
+			this.drawAlphaNum(gl, "STAGE" + (count+1<10?"0"+(count+1):(count+1)), 15, 3, 134 * (count % 7) + 13, 130 * (count / 7) + 14 + 10);													// 面名の表示
+			this.drawAlphaNum(gl, "623456", 15, 1, 134 * (count % 7) + 9, 130 * (count / 7) + 14 + 103);																						// 得点の表示
+			this.drawTexture(gl, this.scen.texGame, this.scen.texGameIndex[TexGame.TEX.medalGold.ordinal()], true, 134 * (count % 7) + (128 / 2), 130 * (count / 7) + (128 / 2) + 14, 60, 60);	// ランクの表示
 		}
 
-		this.drawTexture(gl, scen.texGame, scen.texGameIndex[TexGame.TEX.operationBack.ordinal()], false, 10, this.sakuraManager.getVirtualHeight() - 80 - 15, 80, 80);
+		// エリアの表示
+		this.drawAlphaNum(gl, "AREA" + (this.scen.selectedArea+1<10?"0"+(this.scen.selectedArea+1):(this.scen.selectedArea+1)), 32, 3, 375, this.sakuraManager.getVirtualHeight() - 80 - 15 + 10);
+
+		// 戻るボタンの描画
+		this.drawButton(gl, this.btn.btnBack, false, 10, this.sakuraManager.getVirtualHeight() - 80 - 15, 80, 80);
 	}
 
 	@Override

@@ -1,24 +1,18 @@
 package android.futuresoftware.jp.speedtest.scene.stage;
 
-import android.futuresoftware.jp.speedtest.R;
-import android.futuresoftware.jp.speedtest.texture.TexGame;
+import android.futuresoftware.jp.speedtest.scene.AppSceneBase;
 
-import java.util.EnumSet;
-
-import jp.futuresoftware.android.sakura.base.SceneBase;
 import jp.futuresoftware.android.sakura.base.SceneButtonBase;
 import jp.futuresoftware.android.sakura.base.SceneProcessBase;
 import jp.futuresoftware.android.sakura.base.SceneRendererBase;
-import jp.futuresoftware.android.sakura.texture.TextureManager;
 
 /**
  * Created by toshiyuki on 2015/04/02.
  */
-public class StageScene extends SceneBase {
+public class StageScene extends AppSceneBase {
 
 	// メンバ変数定義
-	public int texGame;						// テクスチャーハンドラー
-	public int[] texGameIndex;				// テクスチャーインデックス
+	public int selectedArea;
 
 	/**
 	 * @param sceneName
@@ -30,24 +24,12 @@ public class StageScene extends SceneBase {
 		super(sceneName, sceneRendererBase, sceneProcessBase, sceneButtonBase);
 	}
 
-	@Override
-	public void init() {
-
-	}
-
+	/**
+	 *
+	 */
 	@Override
 	public void initCallback() {
-		this.texGame  = this.sakuraManager.getTextureID(R.drawable.game, R.raw.game);
-		TextureManager.characterName2Index(this, this.texGame, "texGameIndex", EnumSet.allOf(TexGame.TEX.class));
-	}
-
-	@Override
-	public void terminate() {
-
-	}
-
-	@Override
-	public void terminateCallback() {
-
+		this.initCallbackCommon();
+		this.selectedArea			= (Integer)this.sakuraManager.getVariable("selectedArea", new Integer(1));
 	}
 }

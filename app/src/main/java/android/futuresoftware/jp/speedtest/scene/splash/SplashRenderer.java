@@ -1,5 +1,7 @@
 package android.futuresoftware.jp.speedtest.scene.splash;
 
+import android.futuresoftware.jp.speedtest.texture.TexFslogo;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import jp.futuresoftware.android.sakura.base.SceneRendererBase;
@@ -22,15 +24,15 @@ public class SplashRenderer extends SceneRendererBase {
     public void draw(GL10 gl, float frametime) {
         if (proc.timer < 5.0f)
         {
-            if (proc.timer <= 2.0f)      { this.drawTexture(gl, scen.texIDFslogo, 0, true, this.sakuraManager.getVirtualWidth() / 2, this.sakuraManager.getVirtualHeight() / 2,       (int)(((proc.timer - 0.0f) / 2.0f) * 100.0f)); }
-            else if (proc.timer >  3.0f) { this.drawTexture(gl, scen.texIDFslogo, 0, true, this.sakuraManager.getVirtualWidth() / 2, this.sakuraManager.getVirtualHeight() / 2, 100 - (int)(((proc.timer - 3.0f) / 2.0f) * 100.0f)); }
-            else                         { this.drawTexture(gl, scen.texIDFslogo, 0, true, this.sakuraManager.getVirtualWidth() / 2, this.sakuraManager.getVirtualHeight() / 2, 100); }
+            if (proc.timer <= 2.0f)      { this.drawTexture(gl, scen.texFslogo, scen.texFslogoIndex[TexFslogo.TEX.fslogo.ordinal()], true, this.sakuraManager.getVirtualWidth() / 2, this.sakuraManager.getVirtualHeight() / 2,       (int)(((proc.timer - 0.0f) / 2.0f) * 100.0f)); }
+            else if (proc.timer >  3.0f) { this.drawTexture(gl, scen.texFslogo, scen.texFslogoIndex[TexFslogo.TEX.fslogo.ordinal()], true, this.sakuraManager.getVirtualWidth() / 2, this.sakuraManager.getVirtualHeight() / 2, 100 - (int)(((proc.timer - 3.0f) / 2.0f) * 100.0f)); }
+            else                         { this.drawTexture(gl, scen.texFslogo, scen.texFslogoIndex[TexFslogo.TEX.fslogo.ordinal()], true, this.sakuraManager.getVirtualWidth() / 2, this.sakuraManager.getVirtualHeight() / 2, 100); }
         }
         else
         {
-            if (proc.timer <= 7.0f)      { this.drawTexture(gl, scen.texIDFslogo, 1, true, this.sakuraManager.getVirtualWidth() / 2, this.sakuraManager.getVirtualHeight() / 2,       (int)(((proc.timer - 5.0f) / 2.0f) * 100.0f)); }
-            else if (proc.timer >  8.0f) { this.drawTexture(gl, scen.texIDFslogo, 1, true, this.sakuraManager.getVirtualWidth() / 2, this.sakuraManager.getVirtualHeight() / 2, 100 - (int)(((proc.timer - 8.0f) / 2.0f) * 100.0f)); }
-            else                         { this.drawTexture(gl, scen.texIDFslogo, 1, true, this.sakuraManager.getVirtualWidth() / 2, this.sakuraManager.getVirtualHeight() / 2, 100); }
+            if (proc.timer <= 7.0f)      { this.drawTexture(gl, scen.texFslogo, scen.texFslogoIndex[TexFslogo.TEX.sakuralogo.ordinal()], true, this.sakuraManager.getVirtualWidth() / 2, this.sakuraManager.getVirtualHeight() / 2,       (int)(((proc.timer - 5.0f) / 2.0f) * 100.0f)); }
+            else if (proc.timer >  8.0f) { this.drawTexture(gl, scen.texFslogo, scen.texFslogoIndex[TexFslogo.TEX.sakuralogo.ordinal()], true, this.sakuraManager.getVirtualWidth() / 2, this.sakuraManager.getVirtualHeight() / 2, 100 - (int)(((proc.timer - 8.0f) / 2.0f) * 100.0f)); }
+            else                         { this.drawTexture(gl, scen.texFslogo, scen.texFslogoIndex[TexFslogo.TEX.sakuralogo.ordinal()], true, this.sakuraManager.getVirtualWidth() / 2, this.sakuraManager.getVirtualHeight() / 2, 100); }
         }
     }
 

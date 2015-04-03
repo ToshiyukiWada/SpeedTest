@@ -15,7 +15,20 @@ public class TexGame {
 		,stageButtonFrame
 		,stageButtonFrameTouched
 		,stageButtonFrameDisabled
-
 		,operationBack
+		,operationBackTouched
+		,medalGold
+		,medalSilver
+		,medalBronze
+		,human1
+		,human2
+		,human3
+		,human4
+		,human5
+		,human6
+		,human7
+		,human8
+		,title
+		,ground
     }
 }

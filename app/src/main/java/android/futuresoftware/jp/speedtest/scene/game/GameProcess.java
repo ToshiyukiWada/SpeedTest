@@ -11,7 +11,7 @@ import jp.futuresoftware.android.sakura.core.SakuraTouchManager;
 public class GameProcess extends SceneProcessBase {
     @Override
     public void back() {
-
+		this.sakuraManager.changeScene("STAGE");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package android.futuresoftware.jp.speedtest;
 
+import android.futuresoftware.jp.speedtest.scene.game.GameButton;
 import android.futuresoftware.jp.speedtest.scene.game.GameProcess;
 import android.futuresoftware.jp.speedtest.scene.game.GameRenderer;
 import android.futuresoftware.jp.speedtest.scene.game.GameScene;
@@ -61,7 +62,7 @@ public class MainActivity extends SakuraActivity
         this.sakuraManager.setBackgroundColor(Color.parseColor("#ffffff"));						// 背景色指定
         this.sakuraManager.setTextTextureBufferSize(20);										// テキストテクスチャバッファーサイズの指定
         this.sakuraManager.setDebug(false);														// デバッグモード
-		this.sakuraManager.setFont("Boxy-Bold.ttf", Color.parseColor("#000000"));					// フォント関連の設定
+		this.sakuraManager.setFont("Boxy-Bold.ttf", Color.parseColor("#000000"));				// フォント関連の設定
 
 		//---------------------------------------------------------------------
         // AdMobの有効化
@@ -75,7 +76,7 @@ public class MainActivity extends SakuraActivity
         this.sakuraManager.addScene(new TitleScene  ("TITLE"    ,  new TitleRenderer()      , new TitleProcess()    , null));
         this.sakuraManager.addScene(new MenuScene   ("MENU"     ,  new MenuRenderer()       , new MenuProcess()     , new MenuButton()));
 		this.sakuraManager.addScene(new StageScene  ("STAGE"    ,  new StageRenderer()      , new StageProcess()    , new StageButton()));
-		this.sakuraManager.addScene(new GameScene   ("GAME"     ,  new GameRenderer()       , new GameProcess()     , null));
+		this.sakuraManager.addScene(new GameScene   ("GAME"     ,  new GameRenderer()       , new GameProcess()     , new GameButton()));
         this.sakuraManager.addScene(new ScoreScene  ("SCORE"    ,  new ScoreRenderer()      , new ScoreProcess()    , null));
         this.sakuraManager.addScene(new ShopScene   ("SHOP"     ,  new ShopRenderer()       , new ShopProcess()     , null));
 

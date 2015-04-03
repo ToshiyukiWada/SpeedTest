@@ -9,5 +9,19 @@
     <char name="stageButtonFrame"           x="540" y="210" w="128" h="128" />
     <char name="stageButtonFrameTouched"    x="668" y="210" w="128" h="128" />
     <char name="stageButtonFrameDisabled"   x="796" y="210" w="128" h="128" />
-    <char name="operationBack"              x="840" y="0"   w="110" h="110" />
+    <char name="operationBack"              x="0"   y="400" w="110" h="110" />
+    <char name="operationBackTouched"       x="110" y="400" w="110" h="110" />
+    <char name="medalGold"                  x="220" y="400" w="150" h="150" />
+    <char name="medalSilver"                x="370" y="400" w="150" h="150" />
+    <char name="medalBronze"                x="520" y="400" w="150" h="150" />
+    <char name="human1"			            x="0"	y="550"	w="93"	h="148" />
+    <char name="human2"			            x="93"	y="550"	w="93"	h="148" />
+    <char name="human3"			            x="186"	y="550"	w="93"	h="148" />
+    <char name="human4"			            x="279"	y="550"	w="93"	h="148" />
+    <char name="human5"			            x="372"	y="550"	w="93"	h="148" />
+    <char name="human6"			            x="465"	y="550"	w="93"	h="148" />
+    <char name="human7"			            x="558"	y="550"	w="93"	h="148" />
+    <char name="human8"			            x="651"	y="550"	w="93"	h="148" />
+    <char name="title"                      x="540" y="338" w="280" h="50"  />
+    <char name="ground"                     x="840" y="0"   w="10"  h="10" />
 </texture>

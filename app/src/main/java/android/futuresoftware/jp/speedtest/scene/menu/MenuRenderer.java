@@ -31,13 +31,17 @@ public class MenuRenderer extends SceneRendererBase {
 			this.drawAlphaNum(gl, "AREA" + (count+1<10?"0"+(count+1):(count+1)), 25, 1, proc.menuScrollStartPos + (count * 190) + 26, 60);
 		}
 
-		// ボタンの描画
+		// ショップボタンの描画
 		this.drawButton(gl,btn.btnShop, false, 320, 425);
-		this.drawAlphaNum(gl, "SHOP", 40, 2, 405, 440);
+		this.drawAlphaNum(gl, "ITEMSHOP", 35, 2, 325, 440);
 
+		// WEBSITEボタンの描画
 		this.drawButton(gl,btn.btnWebsite, false, 640, 425);
-		this.drawAlphaNum(gl, "WEBSITE", 40, 2, 665, 440);
-    }
+		this.drawAlphaNum(gl, "WEBSITE", 35, 2, 665, 440);
+
+		// 戻るボタンの描画
+		this.drawButton(gl, this.btn.btnBack, false, 10, this.sakuraManager.getVirtualHeight() - 80 - 15, 80, 80);
+	}
 
     @Override
     public void term(GL10 gl) {

@@ -12,20 +12,30 @@ import jp.futuresoftware.android.sakura.base.SceneButtonProcessBase;
 public class MenuButton extends AppSceneButtonBase {
 
 	// メンバ変数定義
-    private MenuScene scen;     // 対象シーンクラス
+    private MenuScene scen;     	// 対象シーンクラス
 
-	public int count;			// 汎用カウンタ
-    public int btnMenus[];      // メニューボタン
-    public int btnShop;         // ショップボタン
-    public int btnWebsite;      // WEBサイトボタン
+	public int count;				// 汎用カウンタ
+
+	public int[] btnMenus;      	// メニューボタン
+	public String[] btnMenuLabels;	// メニューボタンラベル
+
+    public int btnShop;         	// ショップボタン
+	public String btnShopLabel;		// ショップボタンラベル
+
+	public int btnWebsite;      	// WEBサイトボタン
+	public String btnWebsiteLabel;	// WEBサイトボタンラベル
 
 	/**
 	 *
 	 */
     @Override
     public void init() {
-        this.scen           = (MenuScene)this.scene;
-        this.btnMenus       = new int[20];
+        this.scen           	= (MenuScene)this.scene;
+        this.btnMenus       	= new int[20];
+		this.btnMenuLabels		= new String[20];
+		for (count = 0 ; count < this.btnMenuLabels.length ; count++){ this.btnMenuLabels[count] = "AREA" +  (count+1<10?"0"+(count+1):(count+1)); }
+		this.btnShopLabel		= "ITEMSHOP";
+		this.btnWebsiteLabel	= "WEBSITE";
     }
 
 	/**
@@ -78,7 +88,7 @@ public class MenuButton extends AppSceneButtonBase {
 			// どのエリアを押下されたかを判定する
 			int selectedArea		= -1;
 			for (count = 0 ; count < btnMenus.length ; count++)	{
-				if (btnMenus[count] == buttonIndex){ selectedArea = count; }
+				if (btnMenus[count] == buttonIndex){ selectedArea = count + 1; }
 			}
 			sakuraManager.setVariable("selectedArea", new Integer(selectedArea), true);
 

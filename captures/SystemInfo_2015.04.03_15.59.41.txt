@@ -1,0 +1,39 @@
+Applications Memory Usage (kB):
+Uptime: 42006854 Realtime: 67659916
+
+** MEMINFO in pid 2092 [android.futuresoftware.jp.speedtest] **
+                   Pss  Private  Private  Swapped     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap        0        0        0        0    16052    12065      266
+  Dalvik Heap    11050    10452        0        0    59028    52812     6216
+ Dalvik Other     3681     3636        0        0                           
+        Stack      492      492        0        0                           
+       Ashmem     2216     2212        0        0                           
+    Other dev     5671     3056        4        0                           
+     .so mmap     7364     1184     1448        0                           
+    .jar mmap        8        0        8        0                           
+    .apk mmap      462        0      332        0                           
+    .ttf mmap       45        0        4        0                           
+    .dex mmap     3801       40     2824        0                           
+   Other mmap      567        4       64        0                           
+      Unknown    16684    16680        0        0                           
+        TOTAL    52041    37756     4684        0    75080    64877     6482
+ 
+ Objects
+               Views:       17         ViewRootImpl:        1
+         AppContexts:        3           Activities:        1
+              Assets:        7        AssetManagers:        7
+       Local Binders:       22        Proxy Binders:       20
+    Death Recipients:        1
+     OpenSSL Sockets:        0
+ 
+ SQL
+         MEMORY_USED:        0
+  PAGECACHE_OVERFLOW:        0          MALLOC_SIZE:        0
+ 
+ 
+ Asset Allocations
+    : 1K
+    zip:/data/app-skin/com.sonyericsson.blackthemeblueaccent/com.sonyericsson.uxp.zip:/resources.arsc: 1K
+    zip:/data/app/android.futuresoftware.jp.speedtest-2.apk:/assets/Boxy-Bold.ttf: 14K

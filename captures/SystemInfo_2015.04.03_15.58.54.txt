@@ -1,0 +1,74 @@
+AGGREGATED OVER LAST 24 HOURS:
+Per-Package Stats:
+  * android.futuresoftware.jp.speedtest / u0a369:
+      * android.futuresoftware.jp.speedtest / u0a369:
+               TOTAL: 24% (35MB-45MB-59MB/29MB-37MB-53MB over 145)
+                 Top: 24% (35MB-45MB-59MB/29MB-37MB-53MB over 145)
+            Receiver: 0.00%
+          (Last Act): 0.02%
+            (Cached): 18% (2.3MB-31MB-42MB/1.2MB-25MB-36MB over 21)
+
+Summary:
+  * android.futuresoftware.jp.speedtest / u0a369:
+           TOTAL: 24% (35MB-45MB-59MB/29MB-37MB-53MB over 145)
+             Top: 24% (35MB-45MB-59MB/29MB-37MB-53MB over 145)
+        Receiver: 0.00%
+      (Last Act): 0.02%
+        (Cached): 18% (2.3MB-31MB-42MB/1.2MB-25MB-36MB over 21)
+
+Run time Stats:
+  SOff/Norm: +7h44m36s24ms
+       Mod : +94ms
+  SOn /Norm: +7h34m5s542ms
+      TOTAL: +15h18m41s660ms
+
+          Start time: 2015-04-02 15:05:00
+  Total elapsed time: +1d0h53m23s817ms (partial) libdvm.so chromeview
+
+AGGREGATED OVER LAST 3 HOURS:
+Per-Package Stats:
+  * android.futuresoftware.jp.speedtest / u0a369:
+      * android.futuresoftware.jp.speedtest / u0a369:
+               TOTAL: 17% (40MB-46MB-50MB/32MB-36MB-41MB over 18)
+                 Top: 17% (40MB-46MB-50MB/32MB-36MB-41MB over 18)
+          (Last Act): 0.09%
+            (Cached): 54% (34MB-35MB-38MB/27MB-28MB-31MB over 5)
+
+Summary:
+  * android.futuresoftware.jp.speedtest / u0a369:
+           TOTAL: 17% (40MB-46MB-50MB/32MB-36MB-41MB over 18)
+             Top: 17% (40MB-46MB-50MB/32MB-36MB-41MB over 18)
+      (Last Act): 0.09%
+        (Cached): 54% (34MB-35MB-38MB/27MB-28MB-31MB over 5)
+
+Run time Stats:
+  SOff/Norm: +26m21s468ms
+  SOn /Norm: +2h12m0s991ms
+      TOTAL: +2h38m22s459ms
+
+          Start time: 2015-04-03 13:20:42
+  Total elapsed time: +2h38m22s459ms (partial) libdvm.so chromeview
+
+CURRENT STATS:
+Per-Package Stats:
+  * android.futuresoftware.jp.speedtest / u0a369:
+      * android.futuresoftware.jp.speedtest / u0a369:
+               TOTAL: 17% (40MB-46MB-50MB/32MB-36MB-41MB over 18)
+                 Top: 17% (40MB-46MB-50MB/32MB-36MB-41MB over 18)
+          (Last Act): 0.09%
+            (Cached): 54% (34MB-35MB-38MB/27MB-28MB-31MB over 5)
+
+Summary:
+  * android.futuresoftware.jp.speedtest / u0a369:
+           TOTAL: 17% (40MB-46MB-50MB/32MB-36MB-41MB over 18)
+             Top: 17% (40MB-46MB-50MB/32MB-36MB-41MB over 18)
+      (Last Act): 0.09%
+        (Cached): 54% (34MB-35MB-38MB/27MB-28MB-31MB over 5)
+
+Run time Stats:
+  SOff/Norm: +26m21s468ms
+  SOn /Norm: +2h12m0s612ms (running)
+      TOTAL: +2h38m22s80ms
+
+          Start time: 2015-04-03 13:20:42
+  Total elapsed time: +2h38m22s501ms (partial) libdvm.so chromeview

@@ -27,17 +27,17 @@ public class MenuRenderer extends SceneRendererBase {
 
 		// メニューボタンの描画
 		for (count = 0 ; count < btn.btnMenus.length ; count++) {
-			this.drawButton(gl, btn.btnMenus[count],false, proc.menuScrollStartPos + (count * 190), 5);
-			this.drawAlphaNum(gl, "AREA" + (count+1<10?"0"+(count+1):(count+1)), 25, 1, proc.menuScrollStartPos + (count * 190) + 26, 60);
+			this.drawButton(gl, btn.btnMenus[count], false, proc.menuScrollStartPos + (count * 190), 5);
+			this.drawAlphaNum(gl, this.btn.btnMenuLabels[count], 25, 1, proc.menuScrollStartPos + (count * 190) + 26, 60);
 		}
 
 		// ショップボタンの描画
-		this.drawButton(gl,btn.btnShop, false, 320, 425);
-		this.drawAlphaNum(gl, "ITEMSHOP", 35, 2, 325, 440);
+		this.drawButton(gl, btn.btnShop, false, 320, 425);
+		this.drawAlphaNum(gl, this.btn.btnShopLabel, 35, 2, 325, 440);
 
 		// WEBSITEボタンの描画
 		this.drawButton(gl,btn.btnWebsite, false, 640, 425);
-		this.drawAlphaNum(gl, "WEBSITE", 35, 2, 665, 440);
+		this.drawAlphaNum(gl, this.btn.btnWebsiteLabel, 35, 2, 665, 440);
 
 		// 戻るボタンの描画
 		this.drawButton(gl, this.btn.btnBack, false, 10, this.sakuraManager.getVirtualHeight() - 80 - 15, 80, 80);

@@ -28,7 +28,7 @@ public class GameRenderer extends SceneRendererBase {
     public void draw(GL10 gl, float frametime) {
 
 		// キャラクターの描画
-		this.burstTexture(scen.texGame, scen.texGameIndex[TexGame.TEX.human1.ordinal()], true, this.sakuraManager.getVirtualWidth() / 2, (int) (this.sakuraManager.getVirtualHeight() / 1.5f), 100, 93, 148);
+		this.burstTexture(scen.texGame, scen.texGameIndex[TexGame.TEX.human1.ordinal()] + (int) proc.playerAnimationCounter, true, 40, (int) (this.sakuraManager.getVirtualHeight() / 1.5f), 100, 93, 148);
 
 		// 道の描画
 		for(count = 0 ; count < this.sakuraManager.getVirtualWidth() ; count++) {
@@ -37,10 +37,16 @@ public class GameRenderer extends SceneRendererBase {
 		this.burstTextureRenderer(gl, scen.texGame);
 
 		// タイムの表示
+		this.drawAlphaNum(gl, Integer.toString((int)this.proc.time), 20, 0, 0, 0);
+
+		// 速度表示
+		for(count = 0 ; count < 40 ; count++) {
+			this.drawAlphaNum(gl, Integer.toString((int) this.proc.playerSpeed), 20, 00, 0, 30 + (count * 10));
+		}
 
 		// エリアの表示
-		this.drawAlphaNum(gl, "AREA" + (this.scen.selectedArea+1<10?"0"+(this.scen.selectedArea+1):(this.scen.selectedArea+1)), 32, 3, 375, this.sakuraManager.getVirtualHeight() - 80 - 15 + 10);
-		this.drawAlphaNum(gl, "STAGE" + (this.scen.selectedStage+1<10?"0"+(this.scen.selectedStage+1):(this.scen.selectedStage+1)), 32, 3, 358, this.sakuraManager.getVirtualHeight() - 80 - 15 + 50);
+		this.drawAlphaNum(gl, this.scen.selectedAreaLabel, 32, 3, 375, this.sakuraManager.getVirtualHeight() - 80 - 15 + 10);
+		this.drawAlphaNum(gl, this.scen.selectedStageLabel, 32, 3, 358, this.sakuraManager.getVirtualHeight() - 80 - 15 + 50);
     }
 
     @Override

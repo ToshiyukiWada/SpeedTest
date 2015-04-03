@@ -13,6 +13,7 @@ public class StageScene extends AppSceneBase {
 
 	// メンバ変数定義
 	public int selectedArea;
+	public String selectedAreaLabel;
 
 	/**
 	 * @param sceneName
@@ -31,5 +32,6 @@ public class StageScene extends AppSceneBase {
 	public void initCallback() {
 		this.initCallbackCommon();
 		this.selectedArea			= (Integer)this.sakuraManager.getVariable("selectedArea", new Integer(1));
+		this.selectedAreaLabel		= "AREA" + (this.selectedArea<10?"0"+(this.selectedArea):(this.selectedArea));
 	}
 }

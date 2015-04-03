@@ -13,10 +13,13 @@ import jp.futuresoftware.android.sakura.base.SceneButtonProcessBase;
 public class StageButton extends AppSceneButtonBase {
 
 	// メンバ変数定義
-	private StageScene scen;     // 対象シーンクラス
+	private StageScene scen;    	// 対象シーンクラス
 
-	public int count;			// 汎用カウンタ
-	public int btnStages[];     // ステージボタン
+	public int count;				// 汎用カウンタ
+
+	public int[] btnStages;     	// ステージボタン
+	public String[] btnStageLabels;	// ステージボタンラベル
+	public String[] btnStageScores;	// ステージボタンスコアラベル
 
 	/**
 	 *
@@ -25,6 +28,14 @@ public class StageButton extends AppSceneButtonBase {
 	public void init() {
 		this.scen           = (StageScene)this.scene;
 		this.btnStages      = new int[21];
+		this.btnStageLabels	= new String[this.btnStages.length];
+		this.btnStageScores = new String[this.btnStages.length];
+
+		for (count = 0 ; count < this.btnStages.length ; count++)
+		{
+			this.btnStageLabels[count]		= "AREA" + (count+1<10?"0"+(count+1):(count+1));
+			this.btnStageScores[count]		= "123456";
+		}
 	}
 
 	/**

@@ -126,7 +126,7 @@ public class SakuraRenderer implements GLSurfaceView.Renderer
 			else
 			{
 				// Wait時の処理をここに記述する
-
+				this.sakuraManager.getSakuraDraw().drawAlphaNum(gl, "NOWLOADING", 30, 5, 10, 10, 100);
 
 			}
 			

@@ -13,7 +13,10 @@ public class GameScene extends AppSceneBase {
 
 	// メンバ変数定義
 	public int selectedArea;
+	public String selectedAreaLabel;
+
 	public int selectedStage;
+	public String selectedStageLabel;
 
 	/**
 	 *
@@ -32,6 +35,9 @@ public class GameScene extends AppSceneBase {
 	@Override
 	public void initCallback() {
 		this.initCallbackCommon();
-		this.selectedArea = (Integer) this.sakuraManager.getVariable("selectedArea", new Integer(1));
+		this.selectedArea			= (Integer) this.sakuraManager.getVariable("selectedArea", new Integer(1));
+		this.selectedStage			= (Integer) this.sakuraManager.getVariable("selectedStage", new Integer(1));
+		this.selectedAreaLabel		= "AREA" + (this.selectedArea<10?"0"+(this.selectedArea):(this.selectedArea));
+		this.selectedStageLabel		= "STAGE" + (this.selectedStage<10?"0"+(this.selectedStage):(this.selectedStage));
 	}
 }

@@ -1,0 +1,45 @@
+TASK android.futuresoftware.jp.speedtest id=79
+  ACTIVITY android.futuresoftware.jp.speedtest/.MainActivity 44c5fed0 pid=2092
+    Local Activity 447e2f18 State:
+      mResumed=true mStopped=false mFinished=false
+      mLoadersStarted=true
+      mChangingConfigurations=false
+      mCurrentConfig={1.0 440mcc50mnc ja_JP ldltr sw360dp w598dp h335dp 480dpi nrml land finger -keyb/v/h -nav/h s.91 skinPackageSeq.1}
+    FragmentManager misc state:
+      mActivity=android.futuresoftware.jp.speedtest.MainActivity@447e2f18
+      mContainer=android.app.Activity$1@447e3090
+      mCurState=5 mStateSaved=false mDestroyed=false
+    ViewRoot:
+      mAdded=true mRemoved=false
+      mConsumeBatchedInputScheduled=true
+      mPendingInputEventCount=0
+      mProcessInputEventsScheduled=false
+      mTraversalScheduled=false
+      android.view.ViewRootImpl$NativePreImeInputStage: mQueueLength=0
+      android.view.ViewRootImpl$ImeInputStage: mQueueLength=0
+      android.view.ViewRootImpl$NativePostImeInputStage: mQueueLength=0
+    Choreographer:
+      mFrameScheduled=true
+      mLastFrameTime=41984498 (20 ms ago)
+    View Hierarchy:
+      com.android.internal.policy.impl.PhoneWindow$DecorView{44d4db90 V.E..... R....... 0,0-1794,1080}
+        android.widget.LinearLayout{44d4e8d8 V.E..... ........ 0,0-1794,1080}
+          android.view.ViewStub{44d521b0 G.E..... ......I. 0,0-0,0 #1020318}
+          android.widget.FrameLayout{44d525e0 V.ED.... ........ 0,0-1794,1080 #1020002 android:id/content}
+            android.widget.LinearLayout{44826b88 V.E..... ........ 0,0-1794,1080}
+              android.widget.LinearLayout{44827ec0 V.E..... ........ 0,0-1794,930}
+                android.widget.LinearLayout{448282d0 V.E..... ........ 70,0-1723,930}
+                  jp.futuresoftware.android.sakura.core.SakuraView{447f1be0 V.E..... ........ 0,0-1653,930}
+              android.widget.LinearLayout{448287a0 V.E..... ........ 0,930-1794,1080}
+                com.google.android.gms.ads.AdView{449294f8 V.E..... ........ 0,0-1794,150}
+                  com.google.android.gms.ads.internal.e{44d46e18 V.E..... ........ 417,0-1377,150}
+                    com.google.android.gms.ads.internal.s.g{44f2a870 VFEDHVC. .F...... 0,0-960,150}
+                    com.google.android.gms.ads.internal.s.g{44d32b50 GFEDHVC. ......I. 0,0-960,150}
+    Looper (main, tid 1) {447db810}
+      Message 0: { when=-41ms what=1 target=com.android.org.chromium.base.SystemMessageHandler }
+      Message 1: { when=-40ms what=1 target=com.android.org.chromium.base.SystemMessageHandler }
+      Message 2: { when=-39ms what=2 target=com.android.org.chromium.base.SystemMessageHandler }
+      Message 3: { when=-39ms what=1 target=com.android.org.chromium.base.SystemMessageHandler }
+      Message 4: { when=-39ms what=1 target=com.android.org.chromium.base.SystemMessageHandler }
+      Message 5: { when=+51s830ms callback=com.google.android.gms.ads.internal.r target=android.os.Handler }
+      (Total messages: 6, idling=false, quitting=false)

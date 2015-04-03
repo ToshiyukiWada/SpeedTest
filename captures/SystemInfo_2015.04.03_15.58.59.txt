@@ -1,0 +1,87 @@
+Applications Graphics Acceleration Info:
+Uptime: 41965689 Realtime: 67618751
+
+** Graphics info for pid 2092 [android.futuresoftware.jp.speedtest] **
+
+Recent DisplayList operations
+        DrawRect
+        DrawDisplayList
+          DrawDisplayList
+            DrawDisplayList
+              DrawFunctor
+    DrawPatch
+DrawRect
+DrawFunctor
+DrawRect
+DrawDisplayList
+  DrawDisplayList
+    DrawDisplayList
+      DrawDisplayList
+      DrawDisplayList
+        DrawRect
+        DrawDisplayList
+          DrawDisplayList
+            DrawDisplayList
+              DrawFunctor
+    DrawPatch
+DrawRect
+DrawFunctor
+DrawRect
+DrawDisplayList
+  DrawDisplayList
+    DrawDisplayList
+      DrawDisplayList
+      DrawDisplayList
+        DrawRect
+        DrawDisplayList
+          DrawDisplayList
+            DrawDisplayList
+              DrawFunctor
+    DrawPatch
+DrawRect
+DrawFunctor
+DrawRect
+DrawDisplayList
+  DrawDisplayList
+    DrawDisplayList
+      DrawDisplayList
+      DrawDisplayList
+        DrawRect
+        DrawDisplayList
+          DrawDisplayList
+            DrawDisplayList
+              DrawFunctor
+    DrawPatch
+DrawRect
+DrawFunctor
+
+Caches:
+Current memory usage / total memory usage (bytes):
+  TextureCache                0 / 50331648
+  LayerCache                  0 / 33554432
+  RenderBufferCache           0 /  4194304
+  GradientCache               0 /  1048576
+  PathCache                   0 / 25165824
+  TextDropShadowCache         0 /  5242880
+  PatchCache               1344 /   131072
+  FontRenderer 0 A8           0 /        0
+  FontRenderer 0 RGBA         0 /        0
+  FontRenderer 0 total        0 /        0
+Other:
+  FboCache                    0 /       16
+Total memory usage:
+  1344 bytes, 0.00 MB
+
+Profile data in ms:
+
+	android.futuresoftware.jp.speedtest/android.futuresoftware.jp.speedtest.MainActivity/android.view.ViewRootImpl@44da72a0
+View hierarchy:
+
+  android.futuresoftware.jp.speedtest/android.futuresoftware.jp.speedtest.MainActivity/android.view.ViewRootImpl@44da72a0
+  13 views, 0.59 kB of display lists, 13674 frames rendered
+
+
+Total ViewRootImpl: 1
+Total Views:        13
+Total DisplayList:  0.59 kB
+
